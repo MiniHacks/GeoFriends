@@ -71,19 +71,22 @@ export default function HomeScreen() {
   }, []);
   return (
     <View
-    // style={{
-    //   flex: 1,
-    //   justifyContent: "center",
-    //   alignItems: "center",
-    // }}
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
     >
       {/* import the background image from assets */}
       <ImageBackground
         source={require("../assets/homescreen_background.png")}
-        // style={{ flex: 1, width: "100%", height: "100%", position: "absolute" }}
+        style={{ flex: 1, width: "100%", height: "100%", position: "absolute" }}
       />
 
       {/*Add centered sign in text using raleway font using size 35, black color*/}
+      <Text style={{ fontFamily: "Raleway", fontSize: 35, color: "black" }}>
+        Sign In
+      </Text>
 
       {/*Create a touchableOpacity button with a text inside with rounded corners that uses the sign_in_button.png*/}
       <TouchableOpacity
@@ -92,23 +95,23 @@ export default function HomeScreen() {
       >
         <ImageBackground
           source={require("../assets/sign_in_button.png")}
-          // style={{
-          //   flex: 1,
-          //   width: "100%",
-          //   height: "100%",
-          //   position: "absolute",
-          // }}
+          style={{
+            flex: 1,
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+          }}
         />
       </TouchableOpacity>
       {/*Add text that says if you don't have an account sign up, with the sign up being a hyperlink and they
        are on the same line*/}
       <Text
-      // style={{
-      //   fontFamily: "Raleway",
-      //   fontSize: 15,
-      //   color: "black",
-      //   marginTop: 10,
-      // }}
+        style={{
+          fontFamily: "Raleway",
+          fontSize: 15,
+          color: "black",
+          marginTop: 10,
+        }}
       >
         Don't have an account?{" "}
       </Text>
@@ -134,7 +137,7 @@ export default function HomeScreen() {
           <View>
             <View>
               <GoogleSigninButton
-                style={{ width: 192, height: 48, padding: 50, margin: 50 }}
+                style={{ width: 192, height: 48, margin: 150 }}
                 size={GoogleSigninButton.Size.Wide}
                 color={GoogleSigninButton.Color.Dark}
                 onPress={signIn}

@@ -6,23 +6,24 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
 import SettingsScreen from "./screens/SettingsScreen";
 import HomeScreen from "./screens/HomeScreen";
+import Leaderboard from "./screens/Leaderboard";
 
 const Tab = createBottomTabNavigator();
 
 function MyTabs() {
   return (
     <Tab.Navigator
-      initialRouteName="Home"
+      initialRouteName="Leaderboard"
       screenOptions={{
         tabBarActiveTintColor: "#e91e63",
         headerShown: false,
       }}
     >
       <Tab.Screen
-        name="Home"
-        component={HomeScreen}
+        name="Leaderboard"
+        component={Leaderboard}
         options={{
-          tabBarLabel: "Home",
+          tabBarLabel: "Leaderboard",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="home" color={color} size={size} />
           ),
