@@ -37,3 +37,9 @@ async def ping_location(location: PingLocationRequest):
     with connection_pool.getconn() as conn:
         db.update_geom(conn, location.latitude, location.longitude, location.userid, location.groupid)
     return {"message": "Location updated successfully"}
+
+# Write a fastapi get method that takes in a groupid and returns the geometry of all users in that group
+@app.get("/get_group_geom/{groupid}")
+async def get_group_geom(groupid: str):
+    with connection_pool.getconn() as conn:
+        return db.get_group_geom(conn, groupid)

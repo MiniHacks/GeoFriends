@@ -36,3 +36,14 @@ def update_geom(conn, lat, lon, userid, groupid):
     with conn.cursor() as cur:
         cur.execute(update_geom_sql, (lat, lon, userid, groupid, userid, groupid, groupid, userid))
         conn.commit()
+        
+def get_group_geom(conn, groupid):
+    get_group_geom_sql = """
+        SELECT jsonb_agg(ST_AsGeoJSON(geometry)::jsonb) AS geometries
+        FROM geometries
+        WHERE groupid = %s;
+    """
+    
+    with conn.cursor() as cur:
+        cur.execute(get_group_geom_sql, (groupid,))
+        return cur.fetchone()[0]
