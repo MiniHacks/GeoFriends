@@ -1,0 +1,30 @@
+return (
+  <Animated.View style={{ flex: 1 }}>
+    <Animated.MapView
+      style={{ flex: 1 }}
+      region={region}
+      onRegionChange={onRegionChange}
+      zoomEnabled={false}
+      zoomControlEnabled={false}
+      rotateEnabled={false}
+      scrollEnabled={false}
+      pitchEnabled={false}
+      showsBuildings={false}
+      showsTraffic={false}
+      showsIndoors={false}
+      showsIndoorLevelPicker={false}
+      zoomTapEnabled={false}
+      zoomEnabled={false}
+      moveOnMarkerPress={false}
+      rotateGesturesEnabled={false}
+      onPress={() => {}}
+      onLongPress={() => {}}
+      onPanDrag={() => {}}
+      onMarkerPress={() => {}}
+      onMarkerSelect={() => {}}
+      onMarkerDeselect={() => {}}
+    >
+      {/* your map markers here */}
+    </Animated.MapView>
+  </Animated.View>
+);
