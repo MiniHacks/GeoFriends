@@ -15,7 +15,7 @@ load_dotenv(dotenv_path=ENV_PATH)
 
 connection_pool = psycopg2.pool.SimpleConnectionPool(
     minconn=1,
-    maxconn=5,
+    maxconn=25,
     host=os.environ["DB_HOST"],
     database=os.environ["DB_DATABASE"],
     user=os.environ["DB_USER"],
@@ -65,7 +65,7 @@ async def root():
 @app.post("/ping_location/")
 async def ping_location(location: PingLocationRequest, user_id = Depends(get_user_token)):
     print(location, user_id)
-    if location.userid != user_id:
+    if location.userid != user_id["uid"]:
         raise HTTPException(status_code=401, detail='Invalid authorization token. Userid does not match.')
     with connection_pool.getconn() as conn:
         db.update_geom(conn, location.latitude, location.longitude, location.userid, location.groupid)

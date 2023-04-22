@@ -5804,6 +5804,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@supersami/rn-foreground-service@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@supersami/rn-foreground-service@npm:2.1.0"
+  peerDependencies:
+    react-native: ">=0.59.0"
+  checksum: 337a99cd69af271d906dcd520ccf281a98bc4d227c73576f1fdf023051513ed23a3ff7b1ef62ff2745835dad577b2666696a1067fa16dc0e0900a4719bc90cd4
+  languageName: node
+  linkType: hard
+
 "@swc/helpers@npm:0.4.11":
   version: 0.4.11
   resolution: "@swc/helpers@npm:0.4.11"
@@ -12862,11 +12871,13 @@ __metadata:
     "@react-native-google-signin/google-signin": ^9.0.2
     "@react-navigation/bottom-tabs": ^6.5.7
     "@react-navigation/native": ^6.1.6
+    "@supersami/rn-foreground-service": ^2.1.0
     expo: ~48.0.11
     expo-splash-screen: ~0.18.1
     expo-status-bar: ^1.4.4
     react: 18.2.0
     react-native: 0.71.6
+    react-native-geolocation-service: ^5.3.1
     react-native-gesture-handler: ^2.9.0
     react-native-linear-gradient: ^2.6.2
     react-native-maps: ^1.6.0
@@ -14321,6 +14332,13 @@ __metadata:
     jscodeshift: ^0.13.1
     nullthrows: ^1.1.1
   checksum: d3a40b557d4b3a0d51664070eb8388b0dde247a0518025ff5a815d3573c98ff16f616df8236e827ee16625f685169931db5c966dd144d860ad5aed437b65b28c
+  languageName: node
+  linkType: hard
+
+"react-native-geolocation-service@npm:^5.3.1":
+  version: 5.3.1
+  resolution: "react-native-geolocation-service@npm:5.3.1"
+  checksum: 9a625c9f87811933491055fd8cbd1ef46f97fbbe0262714ad1d9aa969a8900dcb4abc47e58fe162400a81bcdee79324dfcc8e631862df9a22d59ac84af9acfde
   languageName: node
   linkType: hard
 
