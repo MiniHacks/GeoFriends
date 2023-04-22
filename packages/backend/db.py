@@ -8,9 +8,10 @@ def init_db(conn):
         );
     """
     
-    with conn.cursor() as cur:
-        cur.execute(create_table_sql)
-        conn.commit()
+    cur = conn.cursor()
+    cur.execute(create_table_sql)
+    conn.commit()
+    cur.close()
         
 def update_geom(conn, lat, lon, userid, groupid):
     update_geom_sql = """
@@ -33,9 +34,10 @@ def update_geom(conn, lat, lon, userid, groupid):
         WHERE g.groupid = %s AND g.userid != %s;
     """
     
-    with conn.cursor() as cur:
-        cur.execute(update_geom_sql, (lat, lon, userid, groupid, userid, groupid, groupid, userid))
-        conn.commit()
+    cur = conn.cursor()
+    cur.execute(update_geom_sql, (lon, lat, userid, groupid, userid, groupid, groupid, userid))
+    conn.commit()
+    cur.close()
         
 def get_group_geom(conn, groupid):
     get_group_geom_sql = """
@@ -44,6 +46,8 @@ def get_group_geom(conn, groupid):
         WHERE groupid = %s;
     """
     
-    with conn.cursor() as cur:
-        cur.execute(get_group_geom_sql, (groupid,))
-        return cur.fetchone()[0]
+    cur = conn.cursor()
+    cur.execute(get_group_geom_sql, (groupid,))
+    result = cur.fetchone()[0]
+    cur.close()
+    return result
