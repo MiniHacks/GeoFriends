@@ -20,6 +20,16 @@ function MyTabs() {
       }}
     >
       <Tab.Screen
+        name="HomeScreen"
+        component={HomeScreen}
+        options={{
+          tabBarLabel: "HomeScreen",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="home" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
         name="Leaderboard"
         component={Leaderboard}
         options={{
