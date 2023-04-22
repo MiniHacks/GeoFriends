@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FlatList,
   ImageBackground,
@@ -9,8 +9,13 @@ import {
   Text,
   Modal,
   Dimensions,
+  Image,
 } from "react-native";
 import { ColorPicker } from "react-native-color-picker";
+
+import auth from "@react-native-firebase/auth";
+import firestore from "@react-native-firebase/firestore";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 export default function SettingsScreen() {
   const colors = [
@@ -25,6 +30,8 @@ export default function SettingsScreen() {
     { color: "yellow", hex: "#FDCA40" },
     { color: "green", hex: "#ffffff" },
   ];
+
+  const currentUser = auth().currentUser;
 
   const styles = StyleSheet.create({
     container: {
@@ -46,14 +53,6 @@ export default function SettingsScreen() {
   const [color, setColor] = useState("#000000");
   const [showColorPicker, setShowColorPicker] = useState(false);
   const overlayOpacity = showColorPicker ? 0.5 : 0;
-
-  const handleColorChange = (newColor = "#000000") => {
-    setColor(newColor);
-    setShowColorPicker(false);
-    setBorderColor(newColor);
-    console.log(newColor);
-  };
-
   const handlePress = (color) => {
     if (color === "green") {
       setShowColorPicker(true);
@@ -64,6 +63,72 @@ export default function SettingsScreen() {
 
   const [borderColor, setBorderColor] = useState("transparent");
 
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [location, setLocation] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
+  const [user, setUser] = useState(null);
+  const [initializing, setInitializing] = useState(true);
+  const [userProfilePicture, setUserProfilePicture] = useState(null);
+  const userRef = firestore().collection("users").doc(currentUser.uid);
+
+  const [userAddress, setUserAddress] = useState(null);
+  const handleColorChange = (newColor = "#000000") => {
+    setColor(newColor);
+    setShowColorPicker(false);
+    setBorderColor(newColor);
+  };
+
+  useEffect(() => {
+    const updateUser = async () => {
+      try {
+        const doc = await userRef.get();
+        if (doc.exists) {
+          await userRef.update({
+            color: borderColor,
+          });
+          console.log("User updated!");
+        } else {
+          await userRef.set({
+            color: borderColor,
+          });
+          console.log("New user created!");
+        }
+      } catch (error) {
+        console.error("Something went wrong with Firestore.", error);
+      }
+    };
+    updateUser();
+  }, [borderColor]);
+
+  useEffect(() => {
+    const updateUser = async () => {
+      try {
+        const doc = await userRef.get();
+        if (doc.exists) {
+          await userRef.update({
+            address: location,
+          });
+          console.log("User location updated!");
+        } else {
+          await userRef.set({
+            address: location,
+          });
+          console.log("New user created!");
+        }
+      } catch (error) {
+        console.error("Something went wrong with Firestore.", error);
+      }
+    };
+    updateUser();
+  }, [location]);
+
+  if (currentUser.providerData[0].providerId === "google.com") {
+    const profilePic = currentUser.photoURL;
+    console.log(`Google profile picture URL: ${profilePic}`);
+  } else {
+    console.log("User is not signed in with Google");
+  }
+
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       {/*Add the Image Color so that it will fit fully on the screen */}
@@ -73,24 +138,53 @@ export default function SettingsScreen() {
       />
       {/*Add text at the top of the screen that says Profile, with 50
        pixels of white space above it*/}
-      <Text style={{ color: "white", fontSize: 30, marginTop: 70 }}>
+      <Text
+        style={{
+          color: "white",
+          fontSize: 30,
+          marginTop: "50%",
+          fontFamily: "Raleway",
+        }}
+      >
         Profile
       </Text>
       {/*Add a circle that will be the profile picture, with a width and height of 100 pixels
        */}
-      <View
-        style={{
-          width: 100,
-          height: 100,
-          borderRadius: 100 / 2,
-          backgroundColor: "white",
-          marginTop: 50,
-          borderColor: borderColor,
-          borderWidth: 2,
-        }}
-      />
+
+      {/* If the userprofile picture exists, create a 100 by 100 Image circle of it with radius 50
+       with the border color of borderColor*/}
+
       {/*Add a flatlist that will display the colors in a circle and in 2 x 5 grid
        */}
+      <View style={{ alignItems: "center" }}>
+        {currentUser.photoURL ? (
+          <Image
+            source={{ uri: currentUser.photoURL }}
+            style={{
+              width: 100,
+              height: 100,
+              borderRadius: 100 / 2,
+              borderColor: borderColor,
+              borderWidth: 2,
+              marginTop: 50,
+              marginBottom: "20%",
+            }}
+          />
+        ) : (
+          <View
+            style={{
+              width: 100,
+              height: 100,
+              borderRadius: 100 / 2,
+              borderColor: borderColor,
+              marginTop: 50,
+              backgroundColor: "white",
+              borderWidth: 2,
+            }}
+          />
+        )}
+      </View>
+
       <FlatList
         data={colors}
         renderItem={renderItem}
@@ -140,10 +234,12 @@ export default function SettingsScreen() {
           borderColor: "#00364A",
           borderWidth: 2,
           borderRadius: 10,
-          marginTop: 50,
           width: 300,
+          marginBottom: 0,
         }}
-        placeholder="Address"
+        onChangeText={(text) => setLocation(text)}
+        value={location}
+        placeholder="   Address"
       />
       {/*finish closing all the tags*/}
     </View>
