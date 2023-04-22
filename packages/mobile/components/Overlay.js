@@ -7,8 +7,8 @@ const SAMPLE_DATA = {"welsar55":{"type":"MultiPolygon","coordinates":[[[[0.9,-3.
 
 const {width, height} = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
-const LATITUDE = 34.052235;
-const LONGITUDE = -118.243683;
+const LATITUDE = 34.0705513;
+const LONGITUDE = -118.4468746;
 const LATITUDE_DELTA = 0.0122;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const SPACE = 0.01;
