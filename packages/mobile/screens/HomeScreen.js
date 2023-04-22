@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { Button, Text, View } from "react-native";
 import firestore from "@react-native-firebase/firestore";
 
 //const usersCollection = firestore().collection("users");
@@ -7,20 +7,35 @@ import firestore from "@react-native-firebase/firestore";
 export default function HomeScreen() {
   const userId = "bMacFrTg7HGIQoaKAilu";
   const [user, setUser] = useState(null);
-  function User({ userId }) {
-    useEffect(() => {
-      const subscriber = firestore()
-        .collection("users")
-        .doc(userId)
-        .onSnapshot((documentSnapshot) => {
+  useEffect(() => {
+    const subscriber = firestore()
+      .collection("users")
+      .doc(userId)
+      .onSnapshot({
+        next: (documentSnapshot) => {
           console.log("User data: ", documentSnapshot.data());
           setUser(documentSnapshot.data());
-        });
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
 
-      // Stop listening for updates when no longer required
-      return () => subscriber();
-    }, [userId]);
-  }
+    // Stop listening for updates when no longer required
+    return () => subscriber();
+  }, [userId]);
+  const buttonCallback = () => {
+    const names = ["John", "Jane", "James", "Judy"];
+    firestore()
+      .collection("users")
+      .doc(userId)
+      .update({
+        name: names[Math.floor(Math.random() * names.length)],
+      })
+      .then(() => {
+        console.log("User updated!");
+      });
+  };
 
   return (
     <View
@@ -30,8 +45,9 @@ export default function HomeScreen() {
         alignItems: "center",
       }}
     >
-      <Text>Hello World!</Text>
+      <Text>Home</Text>
       <Text>{user?.name}</Text>
+      <Button title={"Update Name"} onPress={buttonCallback} />
     </View>
   );
 }
