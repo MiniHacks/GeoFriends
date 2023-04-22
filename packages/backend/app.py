@@ -33,11 +33,11 @@ cred = credentials.Certificate(
 )
 initialize_app(cred)
 
-with connection_pool.getconn() as conn:
-    print("Initializing database")
-    db.init_db(conn)
-    conn.close()
-    print("Database initialized successfully")
+conn = connection_pool.getconn()
+print("Initializing database")
+db.init_db(conn)
+conn.close()
+print("Database initialized successfully")
 
 app = FastAPI()
 
@@ -68,15 +68,15 @@ async def ping_location(location: PingLocationRequest, user_id = Depends(get_use
     print(location, user_id)
     if location.userid != user_id["uid"]:
         raise HTTPException(status_code=401, detail='Invalid authorization token. Userid does not match.')
-    with connection_pool.getconn() as conn:
-        db.update_geom(conn, location.latitude, location.longitude, location.userid, location.groupid)
-        conn.close()
+    conn = connection_pool.getconn()
+    db.update_geom(conn, location.latitude, location.longitude, location.userid, location.groupid)
+    conn.close()
     return {"message": "Location updated successfully"}
 
 # Write a fastapi get method that takes in a groupid and returns the geometry of all users in that group
 @app.get("/get_group_geom/{groupid}")
-async def get_group_geom(groupid: str):
-    with connection_pool.getconn() as conn:
-        result = db.get_group_geom(conn, groupid)
-        conn.close()
-        return result
+async def get_group_geom(groupid: str): 
+    conn = connection_pool.getconn()
+    result = db.get_group_geom(conn, groupid)
+    conn.close()
+    return result
