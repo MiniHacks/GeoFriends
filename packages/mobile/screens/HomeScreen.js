@@ -15,19 +15,20 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from "@react-native-google-signin/google-signin";
-import auth from "@react-native-firebase/auth";
+import auth, { firebase } from "@react-native-firebase/auth";
 import { StatusBar } from "expo-status-bar";
 import { Header } from "react-native/Libraries/NewAppScreen";
 
-GoogleSignin.configure({
-  webClientId: "",
-});
 //const usersCollection = firestore().collection("users");
 
 export default function HomeScreen() {
   /*Google Authentication*/
+  GoogleSignin.configure({
+    webClientId: "",
+  });
+
   const [loggedIn, setloggedIn] = useState(false);
-  const [userInfo, setuserInfo] = useState([]);
+  const [userInfo, setuserInfo] = useState(null);
   const signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
@@ -60,7 +61,94 @@ export default function HomeScreen() {
       console.error(error);
     }
   };
+  const GROUP = "welsar-friends";
 
+  const [idToken, setIdToken] = useState(null);
+  const [userId, setUserId] = useState(null);
+  const [authUser, setAuthUser] = useState(null);
+
+  // useEffect(() => {
+  //   return firebase.auth().onAuthStateChanged((user) => {
+  //     if (user) {
+  //       user.getIdToken().then((token) => {
+  //         setIdToken(token);
+  //         setUserId(user.uid);
+  //       });
+  //       console.log({ idToken });
+  //
+  //       fetch("http://172.190.74.123:8000/get_group_geom/" + GROUP, {
+  //         method: "POST",
+  //         headers: { Authorization: `Bearer ${idToken}` },
+  //         body: JSON.stringify({
+  //           userid: { userId },
+  //           groupid: "welsar-friends",
+  //           latitude: 2.05,
+  //           longitude: 0.0,
+  //         }),
+  //       }).then((response) => {
+  //         response.json().then((data) => {
+  //           console.log(data);
+  //         });
+  //       });
+  //     } else {
+  //       setIdToken(null);
+  //     }
+  //   });
+  // }, []);
+
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      user.getIdToken().then((token) => {
+        //setIdToken(token);
+        setUserId(user.uid);
+        console.log({ token });
+
+        fetch("http://172.190.74.123:8000/ping_location", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            userid: user.uid,
+            groupid: "welsar-friends",
+            latitude: 2.05,
+            longitude: 0.0,
+          }),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              console.log(response);
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log(data);
+          })
+          .catch((error) => {
+            console.log(error);
+            if (error.response) {
+              // The request was made and the server responded with a status code
+              // that falls out of the range of 2xx
+              console.log(
+                "Server responded with error:",
+                error.response.status
+              );
+              console.log("Error message:", error.response.data);
+            } else if (error.request) {
+              // The request was made but no response was received
+              console.log("No response received from server");
+            } else {
+              // Something happened in setting up the request that triggered an Error
+              console.log("Error setting up request:", error.message);
+            }
+            console.error("Error fetching data:", error);
+          });
+      });
+    } else {
+      // setIdToken(null);
+    }
+  });
   useEffect(() => {
     GoogleSignin.configure({
       scopes: ["email"], // what API you want to access on behalf of the user, default is email and profile
@@ -69,6 +157,7 @@ export default function HomeScreen() {
       offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
     });
   }, []);
+
   return (
     <View
       style={{
@@ -152,6 +241,7 @@ export default function HomeScreen() {
           </View>
         </ScrollView>
       </SafeAreaView>
+      {/*<Text>token {idToken}</Text>*/}
     </View>
   );
 }
