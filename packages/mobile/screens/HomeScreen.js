@@ -24,13 +24,17 @@ import "../components/backgroundService";
 GoogleSignin.configure({
   webClientId: "",
 });
+import Geolocation from 'react-native-geolocation-service';
 //const usersCollection = firestore().collection("users");
 
 export default function HomeScreen() {
   /*Google Authentication*/
   const [loggedIn, setloggedIn] = useState(false);
   const [userInfo, setuserInfo] = useState([]);
+  const [user, setUser] = useState(null);
+  const [initializing, setInitializing] = useState(true);
   // state to hold location
+  const [location, setLocation] = useState(false);
   const signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
@@ -73,6 +77,94 @@ export default function HomeScreen() {
     });
   }, []);
 
+  // Function to get permission for location
+  const requestLocationPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: 'Geolocation Permission',
+          message: 'Can we access your location?',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      );
+      console.log('granted', granted);
+      if (granted === 'granted') {
+        console.log('You can use Geolocation');
+        return true;
+      } else {
+        console.log('You cannot use Geolocation');
+        return false;
+      }
+    } catch (err) {
+      return false;
+    }
+  };
+
+  requestLocationPermission();
+
+  // Handle user state changes
+  function onAuthStateChanged(user) {
+    setUser(user);
+    console.log(user);
+    if (initializing) setInitializing(false);
+  }
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
+  const apiUrl = "http://172.190.74.123:8000";
+  const groupid = "welsar-friends";
+
+  console.log("At use effect");
+
+  useEffect(() => {
+    console.log("User:");
+    console.log(user);
+
+    if (user) {
+      console.log("Hi");
+
+      const getTokenAndPingLocation = async () => {
+        try {
+          const token = await user.getIdToken();
+          console.log(token);
+
+          if (!location)
+            return;
+
+          const pingData = {
+            userid: user.uid,
+            groupid: groupid,
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+          };
+
+          const response = await fetch(`${apiUrl}/ping_location`, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(pingData),
+          });
+          // console.log(response)
+          const responseData = await response.json();
+          console.log(responseData);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+      getTokenAndPingLocation();
+    }
+  }, [user, location]);
+
+
+  if (initializing) return null;
 
   return (
     <View
@@ -147,6 +239,23 @@ export default function HomeScreen() {
                 color={GoogleSigninButton.Color.Dark}
                 onPress={signIn}
               />
+            <TouchableOpacity
+              onPress={() => {
+                Geolocation.getCurrentPosition(
+                  position => {
+                    console.log(position);
+                    setLocation(position);
+                  },
+                  error => {
+                    // See error code charts below.
+                    console.log(error.code, error.message);
+                    setLocation(null);
+                  },
+                  { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
+                );
+              }}>
+              <Text>Click for location</Text>
+            </TouchableOpacity>
             </View>
             <View>
               {!loggedIn && <Text>You are currently logged out</Text>}

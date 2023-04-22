@@ -14361,6 +14361,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-color-picker@npm:^0.6.0":
+  version: 0.6.0
+  resolution: "react-native-color-picker@npm:0.6.0"
+  dependencies:
+    prop-types: ^15.5.10
+    tinycolor2: ^1.4.1
+  checksum: 47c65e4f6eb6f28fc35cf94399ba44b88494ada99edf37b4cd5eb548ccfd22e83e0c6e72657b033a998809e73f155296fe44a15a71bcd704921bbeef09afb2bb
+  languageName: node
+  linkType: hard
+
+"react-native-geolocation-service@npm:^5.3.1":
+  version: 5.3.1
+  resolution: "react-native-geolocation-service@npm:5.3.1"
+  checksum: 9a625c9f87811933491055fd8cbd1ef46f97fbbe0262714ad1d9aa969a8900dcb4abc47e58fe162400a81bcdee79324dfcc8e631862df9a22d59ac84af9acfde
+  languageName: node
+  linkType: hard
+
 "react-native-gesture-handler@npm:^2.9.0":
   version: 2.9.0
   resolution: "react-native-gesture-handler@npm:2.9.0"

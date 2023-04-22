@@ -2,7 +2,7 @@ import React from "react";
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import { Image, ImageBackground, FlatList, TextInput } from "react-native";
-
+import Overlay from "../components/Overlay";
 const leaderboard_styles = StyleSheet.create({
   container: {
     position: "absolute",
@@ -37,13 +37,13 @@ const title_styles = StyleSheet.create({
 });
 export default function Leaderboard() {
 
-  const GROUP = "welsar-friends";
-
-  fetch("http://172.190.74.123:8000/get_group_geom/" + GROUP).then((response) => {
-    response.json().then((data) => {
-      console.log(data);
-    });
-  });
+  // const GROUP = "welsar-friends";
+  //
+  // fetch("http://172.190.74.123:8000/get_group_geom/" + GROUP).then((response) => {
+  //   response.json().then((data) => {
+  //     console.log(data);
+  //   });
+  // });
 
   return (
     <View
@@ -53,10 +53,7 @@ export default function Leaderboard() {
         alignItems: "center",
       }}
     >
-      <ImageBackground
-        source={require("../assets/UCLASampleMap.png")}
-        style={{ flex: 1, width: "100%", height: "100%", position: "absolute" }}
-      />
+      <Overlay />
       <View style={leaderboard_styles.container}>
         <LinearGradient
           colors={["rgba(260, 260, 260, 0.9)", "rgba(233, 238, 240, 0.3)"]}
@@ -79,5 +76,6 @@ export default function Leaderboard() {
       </View>
       <Text>Settings</Text>
     </View>
+
   );
 }
