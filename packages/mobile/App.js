@@ -9,6 +9,7 @@ import HomeScreen from "./screens/HomeScreen";
 import Leaderboard from "./screens/Leaderboard";
 import auth from "@react-native-firebase/auth";
 import Geolocation from 'react-native-geolocation-service';
+import ExpoCamera from "./screens/ExpoCamera";
 
 const Tab = createBottomTabNavigator();
 
@@ -97,11 +98,7 @@ function MyTabs() {
   const groupid = "welsar-friends";
 
   useEffect(() => {
-    console.log("User:");
-    console.log(user);
-
     if (user) {
-      console.log("Hi");
 
       const getTokenAndPingLocation = async () => {
         try {
@@ -126,7 +123,6 @@ function MyTabs() {
             },
             body: JSON.stringify(pingData),
           });
-          console.log(response)
           const responseData = await response.json();
           console.log(responseData);
         } catch (error) {
@@ -174,6 +170,16 @@ function MyTabs() {
         component={SettingsScreen}
         options={{
           tabBarLabel: "Settings",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="bell" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="ExpoCamera"
+        component={ExpoCamera}
+        options={{
+          tabBarLabel: "ExpoCamera",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="bell" color={color} size={size} />
           ),
