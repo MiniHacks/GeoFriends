@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 import {
   Text,
   View,
@@ -6,7 +7,7 @@ import {
   Button,
   StyleSheet,
   TouchableOpacity,
-  PermissionsAndroid
+  PermissionsAndroid,
 } from "react-native";
 import firestore from "@react-native-firebase/firestore";
 import SignUp from "./SignUp";
@@ -30,6 +31,7 @@ export default function HomeScreen() {
   /*Google Authentication*/
   const [loggedIn, setloggedIn] = useState(false);
   const [userInfo, setuserInfo] = useState([]);
+  const navigation = useNavigation();
   // state to hold location
   const signIn = async () => {
     try {
@@ -41,6 +43,10 @@ export default function HomeScreen() {
         accessToken
       );
       await auth().signInWithCredential(credential);
+      {
+        /*switch screens to leaderboard.js */
+      }
+      navigation.navigate("Leaderboard");
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
@@ -73,90 +79,39 @@ export default function HomeScreen() {
     });
   }, []);
 
-
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      {/* import the background image from assets */}
+    <View style={{ flex: 1 }}>
       <ImageBackground
         source={require("../assets/homescreen_background.png")}
-        style={{ flex: 1, width: "100%", height: "100%", position: "absolute" }}
-      />
-
-      {/*Add centered sign in text using raleway font using size 35, black color*/}
-      <Text style={{ fontFamily: "Raleway", fontSize: 35, color: "black" }}>
-        Sign In
-      </Text>
-
-      {/*Create a touchableOpacity button with a text inside with rounded corners that uses the sign_in_button.png*/}
-      <TouchableOpacity
-        // style={styles.button}
-        onPress={() => console.log("pressed")}
+        style={{ flex: 1, height: "100%", justifyContent: "center" }}
       >
-        <ImageBackground
-          source={require("../assets/sign_in_button.png")}
-          style={{
-            flex: 1,
-            width: "100%",
-            height: "100%",
-            position: "absolute",
-          }}
-        />
-      </TouchableOpacity>
-      {/*Add text that says if you don't have an account sign up, with the sign up being a hyperlink and they
-       are on the same line*/}
-      <Text
-        style={{
-          fontFamily: "Raleway",
-          fontSize: 15,
-          color: "black",
-          marginTop: 10,
-        }}
-      >
-        Don't have an account?{" "}
-      </Text>
-      <TouchableOpacity onPress={() => console.log("pressed")}>
-        {/* add underline */}
-        <Text
-          style={{
-            fontFamily: "Raleway",
-            fontSize: 15,
-            color: "black",
-            marginTop: 10,
-            textDecorationLine: "underline",
-          }}
-        >
-          sign up
-        </Text>
-      </TouchableOpacity>
+        <View style={{ alignItems: "center" }}>
+          {/* Add text that says "Sign In" */}
+          <Text
+            style={{
+              fontFamily: "Raleway",
+              fontSize: 35,
+              color: "black",
+              marginBottom: 30,
+            }}
+          >
+            Sign In
+          </Text>
 
-      {/*Add a button that will take the user to the SignUp screen */}
-
-      <SafeAreaView>
-        <ScrollView contentInsetAdjustmentBehavior="automatic">
-          <View>
-            <View>
-              <GoogleSigninButton
-                style={{ width: 192, height: 48, margin: 150 }}
-                size={GoogleSigninButton.Size.Wide}
-                color={GoogleSigninButton.Color.Dark}
-                onPress={signIn}
-              />
-            </View>
-            <View>
-              {!loggedIn && <Text>You are currently logged out</Text>}
-              {loggedIn && (
-                <Button onPress={signOut} title="LogOut" color="red"></Button>
-              )}
-            </View>
+          {/* Add Google sign-in button */}
+          <View style={{ width: "80%" }}>
+            <GoogleSigninButton
+              style={{ alignSelf: "center" }}
+              size={GoogleSigninButton.Size.Wide}
+              color={GoogleSigninButton.Color.Dark}
+              onPress={signIn}
+            />
           </View>
-        </ScrollView>
-      </SafeAreaView>
+
+          {/* Add logged in status and log out button */}
+          <View>{!loggedIn && <Text>You are currently logged out</Text>}</View>
+        </View>
+      </ImageBackground>
     </View>
   );
 }
