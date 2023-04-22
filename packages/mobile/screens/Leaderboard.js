@@ -192,6 +192,7 @@ export default function Leaderboard() {
                   height: 100,
                   margin: 30,
                   position: "relative",
+                  fontFamily: "Raleway",
                   top: 100,
                 }}
               >
