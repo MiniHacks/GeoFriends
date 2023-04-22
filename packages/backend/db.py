@@ -35,7 +35,7 @@ def update_geom(conn, lat, lon, userid, groupid):
     """
     
     cur = conn.cursor()
-    cur.execute(update_geom_sql, (lat, lon, userid, groupid, userid, groupid, groupid, userid))
+    cur.execute(update_geom_sql, (lon, lat, userid, groupid, userid, groupid, groupid, userid))
     conn.commit()
     cur.close()
         
