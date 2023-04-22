@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
-import { PermissionsAndroid, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
@@ -9,6 +9,7 @@ import HomeScreen from "./screens/HomeScreen";
 import Leaderboard from "./screens/Leaderboard";
 import auth from "@react-native-firebase/auth";
 import Geolocation from "react-native-geolocation-service";
+import ExpoCamera from "./screens/ExpoCamera";
 
 const Tab = createBottomTabNavigator();
 
@@ -77,6 +78,7 @@ function MyTabs() {
     //   //do your thing!
     // }
   };
+  
 
   requestLocationPermission();
 
@@ -95,11 +97,7 @@ function MyTabs() {
   const groupid = "welsar-friends";
 
   useEffect(() => {
-    console.log("User:");
-    console.log(user);
-
     if (user) {
-      console.log("Hi");
 
       const getTokenAndPingLocation = async () => {
         try {
@@ -138,7 +136,7 @@ function MyTabs() {
   if (initializing) return null;
 
   return (
-    <Tab.Navigatgitor
+    <Tab.Navigator
       initialRouteName="Sign In"
       screenOptions={{
         tabBarActiveTintColor: "#e91e63",
@@ -175,7 +173,17 @@ function MyTabs() {
           ),
         }}
       />
-    </Tab.Navigatgitor>
+      <Tab.Screen
+        name="ExpoCamera"
+        component={ExpoCamera}
+        options={{
+          tabBarLabel: "ExpoCamera",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="bell" color={color} size={size} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
   );
 }
 
