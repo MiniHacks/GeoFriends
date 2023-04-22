@@ -1,5 +1,6 @@
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
+apply plugin: 'com.google.gms.google-services'
 
 import com.android.build.OutputFile
 
@@ -115,7 +116,7 @@ android {
 
     namespace 'com.minihacks.geese'
     defaultConfig {
-        applicationId 'com.minihacks.geese'
+        applicationId 'com.minihacks.geofriends'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

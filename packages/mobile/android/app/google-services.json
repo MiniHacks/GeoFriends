@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "287286374960",
+    "project_id": "geofriends-6b2aa",
+    "storage_bucket": "geofriends-6b2aa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:287286374960:android:c14e6b40b883c16163f3f5",
+        "android_client_info": {
+          "package_name": "com.minihacks.geofriends"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "287286374960-jfvim2di43gv8sv57eiknnhdrgvc0541.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGBIW9mVDDAvevpMLgyY5KOUrFSymq0aE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "287286374960-jfvim2di43gv8sv57eiknnhdrgvc0541.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
