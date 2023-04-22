@@ -36,6 +36,15 @@ const title_styles = StyleSheet.create({
   },
 });
 export default function Leaderboard() {
+
+  const GROUP = "welsar-friends";
+
+  fetch("http://172.190.74.123:8000/get_group_geom/" + GROUP).then((response) => {
+    response.json().then((data) => {
+      console.log(data);
+    });
+  });
+
   return (
     <View
       style={{
