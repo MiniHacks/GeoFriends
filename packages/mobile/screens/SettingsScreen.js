@@ -1,14 +1,16 @@
-import React from "react";
+import { useState } from "react";
 import {
-  Text,
-  View,
-  Image,
-  ImageBackground,
   FlatList,
+  ImageBackground,
   TextInput,
   TouchableOpacity,
+  View,
   StyleSheet,
+  Text,
+  Modal,
+  Dimensions,
 } from "react-native";
+import { ColorPicker } from "react-native-color-picker";
 
 export default function SettingsScreen() {
   const colors = [
@@ -21,22 +23,17 @@ export default function SettingsScreen() {
     { color: "orange_yellow", hex: "#F49F0A" },
     { color: "hot_pink_kinda", hex: "#E63462" },
     { color: "yellow", hex: "#FDCA40" },
-    { color: "green", hex: "#3AAFA9" },
+    { color: "green", hex: "#ffffff" },
   ];
-
-  const handlePress = (color) => {
-    // do something with the selected color, e.g. navigate to a new screen
-    console.log(color);
-  };
 
   const styles = StyleSheet.create({
     container: {
       padding: 10,
     },
     circle: {
-      width: 100, // adjust as needed
-      height: 100, // adjust as needed
-      borderRadius: 50,
+      width: 50,
+      height: 50,
+      borderRadius: 25,
       margin: 5,
     },
   });
@@ -45,6 +42,27 @@ export default function SettingsScreen() {
       <View style={[styles.circle, { backgroundColor: item.hex }]} />
     </TouchableOpacity>
   );
+
+  const [color, setColor] = useState("#000000");
+  const [showColorPicker, setShowColorPicker] = useState(false);
+  const overlayOpacity = showColorPicker ? 0.5 : 0;
+
+  const handleColorChange = (newColor = "#000000") => {
+    setColor(newColor);
+    setShowColorPicker(false);
+    setBorderColor(newColor);
+    console.log(newColor);
+  };
+
+  const handlePress = (color) => {
+    if (color === "green") {
+      setShowColorPicker(true);
+    } else {
+      setBorderColor(colors.find((c) => c.color === color).hex);
+    }
+  };
+
+  const [borderColor, setBorderColor] = useState("transparent");
 
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -58,7 +76,6 @@ export default function SettingsScreen() {
       <Text style={{ color: "white", fontSize: 30, marginTop: 70 }}>
         Profile
       </Text>
-
       {/*Add a circle that will be the profile picture, with a width and height of 100 pixels
        */}
       <View
@@ -68,43 +85,67 @@ export default function SettingsScreen() {
           borderRadius: 100 / 2,
           backgroundColor: "white",
           marginTop: 50,
+          borderColor: borderColor,
+          borderWidth: 2,
         }}
       />
-
       {/*Add a flatlist that will display the colors in a circle and in 2 x 5 grid
        */}
       <FlatList
         data={colors}
-        renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => handlePress(item.color)}>
-            <View
-              style={{
-                width: 50,
-                height: 50,
-                borderRadius: 50 / 2,
-                backgroundColor: item.hex,
-                margin: 5,
-              }}
-            />
-          </TouchableOpacity>
-        )}
+        renderItem={renderItem}
         keyExtractor={(item) => item.color}
         numColumns={5}
       />
+
+      {showColorPicker && (
+        <Modal transparent={true} visible={showColorPicker}>
+          <TouchableOpacity
+            style={{
+              position: "absolute",
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              backgroundColor: "black",
+              opacity: overlayOpacity,
+            }}
+            onPress={() => setShowColorPicker(false)}
+          />
+          <View
+            style={{
+              flex: 1,
+              position: "absolute",
+              top: "50%",
+              left: "75%",
+              transform: [{ translateX: -250 }, { translateY: -250 }],
+              width: 300,
+              height: 450,
+              borderRadius: 20,
+            }}
+          >
+            <ColorPicker
+              onColorSelected={handleColorChange}
+              style={{ flex: 1 }}
+            />
+          </View>
+        </Modal>
+      )}
 
       {/*Add a textInput that asks the user for their address using #00364A
        as the border color with a 2 pixel border with rounded edges */}
       <TextInput
         style={{
           height: 40,
-          width: 300,
           borderColor: "#00364A",
           borderWidth: 2,
           borderRadius: 10,
           marginTop: 50,
+          width: 300,
         }}
-        placeholder="   Home Address"
+        placeholder="Address"
       />
+      {/*finish closing all the tags*/}
     </View>
   );
 }
