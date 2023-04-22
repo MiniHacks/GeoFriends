@@ -11,7 +11,8 @@
     },
     "ios": {
       "bundleIdentifier": "com.minihacks.geese"
-    }
+    },
+    "plugins": ["@react-native-google-signin/google-signin"]
   },
   "name": "mobile"
 }
