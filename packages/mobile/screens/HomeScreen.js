@@ -6,6 +6,7 @@ import {
   Button,
   StyleSheet,
   TouchableOpacity,
+  PermissionsAndroid
 } from "react-native";
 import firestore from "@react-native-firebase/firestore";
 import SignUp from "./SignUp";
@@ -15,20 +16,25 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from "@react-native-google-signin/google-signin";
-import auth, { firebase } from "@react-native-firebase/auth";
+import auth from "@react-native-firebase/auth";
 import { StatusBar } from "expo-status-bar";
 import { Header } from "react-native/Libraries/NewAppScreen";
+import "../components/backgroundService";
 
+GoogleSignin.configure({
+  webClientId: "",
+});
+import Geolocation from 'react-native-geolocation-service';
 //const usersCollection = firestore().collection("users");
 
 export default function HomeScreen() {
   /*Google Authentication*/
-  GoogleSignin.configure({
-    webClientId: "",
-  });
-
   const [loggedIn, setloggedIn] = useState(false);
-  const [userInfo, setuserInfo] = useState(null);
+  const [userInfo, setuserInfo] = useState([]);
+  const [user, setUser] = useState(null);
+  const [initializing, setInitializing] = useState(true);
+  // state to hold location
+  const [location, setLocation] = useState(false);
   const signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
@@ -61,94 +67,7 @@ export default function HomeScreen() {
       console.error(error);
     }
   };
-  const GROUP = "welsar-friends";
 
-  const [idToken, setIdToken] = useState(null);
-  const [userId, setUserId] = useState(null);
-  const [authUser, setAuthUser] = useState(null);
-
-  // useEffect(() => {
-  //   return firebase.auth().onAuthStateChanged((user) => {
-  //     if (user) {
-  //       user.getIdToken().then((token) => {
-  //         setIdToken(token);
-  //         setUserId(user.uid);
-  //       });
-  //       console.log({ idToken });
-  //
-  //       fetch("http://172.190.74.123:8000/get_group_geom/" + GROUP, {
-  //         method: "POST",
-  //         headers: { Authorization: `Bearer ${idToken}` },
-  //         body: JSON.stringify({
-  //           userid: { userId },
-  //           groupid: "welsar-friends",
-  //           latitude: 2.05,
-  //           longitude: 0.0,
-  //         }),
-  //       }).then((response) => {
-  //         response.json().then((data) => {
-  //           console.log(data);
-  //         });
-  //       });
-  //     } else {
-  //       setIdToken(null);
-  //     }
-  //   });
-  // }, []);
-
-  firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-      user.getIdToken().then((token) => {
-        //setIdToken(token);
-        setUserId(user.uid);
-        console.log({ token });
-
-        fetch("http://172.190.74.123:8000/ping_location", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            userid: user.uid,
-            groupid: "welsar-friends",
-            latitude: 2.05,
-            longitude: 0.0,
-          }),
-        })
-          .then((response) => {
-            if (!response.ok) {
-              console.log(response);
-              throw new Error("Network response was not ok");
-            }
-            return response.json();
-          })
-          .then((data) => {
-            console.log(data);
-          })
-          .catch((error) => {
-            console.log(error);
-            if (error.response) {
-              // The request was made and the server responded with a status code
-              // that falls out of the range of 2xx
-              console.log(
-                "Server responded with error:",
-                error.response.status
-              );
-              console.log("Error message:", error.response.data);
-            } else if (error.request) {
-              // The request was made but no response was received
-              console.log("No response received from server");
-            } else {
-              // Something happened in setting up the request that triggered an Error
-              console.log("Error setting up request:", error.message);
-            }
-            console.error("Error fetching data:", error);
-          });
-      });
-    } else {
-      // setIdToken(null);
-    }
-  });
   useEffect(() => {
     GoogleSignin.configure({
       scopes: ["email"], // what API you want to access on behalf of the user, default is email and profile
@@ -157,6 +76,95 @@ export default function HomeScreen() {
       offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
     });
   }, []);
+
+  // Function to get permission for location
+  const requestLocationPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: 'Geolocation Permission',
+          message: 'Can we access your location?',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      );
+      console.log('granted', granted);
+      if (granted === 'granted') {
+        console.log('You can use Geolocation');
+        return true;
+      } else {
+        console.log('You cannot use Geolocation');
+        return false;
+      }
+    } catch (err) {
+      return false;
+    }
+  };
+
+  requestLocationPermission();
+
+  // Handle user state changes
+  function onAuthStateChanged(user) {
+    setUser(user);
+    console.log(user);
+    if (initializing) setInitializing(false);
+  }
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
+  const apiUrl = "http://172.190.74.123:8000";
+  const groupid = "welsar-friends";
+
+  console.log("At use effect");
+
+  useEffect(() => {
+    console.log("User:");
+    console.log(user);
+
+    if (user) {
+      console.log("Hi");
+
+      const getTokenAndPingLocation = async () => {
+        try {
+          const token = await user.getIdToken();
+          console.log(token);
+
+          if (!location)
+            return;
+
+          const pingData = {
+            userid: user.uid,
+            groupid: groupid,
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+          };
+
+          const response = await fetch(`${apiUrl}/ping_location`, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(pingData),
+          });
+          // console.log(response)
+          const responseData = await response.json();
+          console.log(responseData);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+      getTokenAndPingLocation();
+    }
+  }, [user, location]);
+
+
+  if (initializing) return null;
 
   return (
     <View
@@ -231,6 +239,23 @@ export default function HomeScreen() {
                 color={GoogleSigninButton.Color.Dark}
                 onPress={signIn}
               />
+            <TouchableOpacity
+              onPress={() => {
+                Geolocation.getCurrentPosition(
+                  position => {
+                    console.log(position);
+                    setLocation(position);
+                  },
+                  error => {
+                    // See error code charts below.
+                    console.log(error.code, error.message);
+                    setLocation(null);
+                  },
+                  { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
+                );
+              }}>
+              <Text>Click for location</Text>
+            </TouchableOpacity>
             </View>
             <View>
               {!loggedIn && <Text>You are currently logged out</Text>}
@@ -241,7 +266,6 @@ export default function HomeScreen() {
           </View>
         </ScrollView>
       </SafeAreaView>
-      {/*<Text>token {idToken}</Text>*/}
     </View>
   );
 }
