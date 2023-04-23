@@ -7,13 +7,13 @@ import {
   Switch,
   Text,
   View,
-  Image
+  Image,
 } from "react-native";
 import Overlay from "../components/Overlay";
 import LinearGradient from "react-native-linear-gradient";
-import { firebase } from '@react-native-firebase/app';
-import { firestore } from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
+import { firebase } from "@react-native-firebase/app";
+import { firestore } from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
 import { StatusBar } from "expo-status-bar";
 
 export default function Leaderboard() {
@@ -52,26 +52,27 @@ export default function Leaderboard() {
     },
   });
 
-
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
     const db = firebase.firestore();
-    return db.collection('users').onSnapshot((snapshot) => {
+    return db.collection("users").onSnapshot((snapshot) => {
       const postData = [];
       snapshot.forEach((doc) => postData.push({ ...doc.data(), id: doc.id }));
-      console.log(postData); 
+      console.log(postData);
       setUsers(postData);
     });
   }, []);
 
   useEffect(() => {
-    fetch("http://172.190.74.123:8000/get_group_geom/" + GROUP).then((response) => {
-      response.json().then((data) => {
-        //   iterate through every object in data
-        setGeostate(data);
-      });
-    });
+    fetch("http://172.190.74.123:8000/get_group_geom/" + GROUP).then(
+      (response) => {
+        response.json().then((data) => {
+          //   iterate through every object in data
+          setGeostate(data);
+        });
+      }
+    );
   }, []);
 
   if (!isEnabled) {
@@ -112,15 +113,38 @@ export default function Leaderboard() {
               horizontal={true}
               contentContainerStyle={styles2.contentContainer}
             >
-              <View style={{ margin: 30, height: 50, flex: 1, flexDirection: 'row'}}>
-                { users.length == 0 ? <Text>Loading...</Text> : users.filter(e => e.photoURL).map((user) => {
-                  return (
-                    <Image
-                      source={{ uri: user.photoURL, referrerPolicy: 'no-referrer' }}
-                      style={{ width: 50, height: 50, borderRadius: 50, marginHorizontal: 10, borderColor: user.color ? user.color : 'black', borderWidth: 2 }}
-                    />
-                  );
-                }) }
+              <View
+                style={{
+                  margin: 30,
+                  height: 50,
+                  flex: 1,
+                  flexDirection: "row",
+                }}
+              >
+                {users.length == 0 ? (
+                  <Text>Loading...</Text>
+                ) : (
+                  users
+                    .filter((e) => e.photoURL)
+                    .map((user) => {
+                      return (
+                        <Image
+                          source={{
+                            uri: user.photoURL,
+                            referrerPolicy: "no-referrer",
+                          }}
+                          style={{
+                            width: 50,
+                            height: 50,
+                            borderRadius: 50,
+                            marginHorizontal: 10,
+                            borderColor: user.color ? user.color : "black",
+                            borderWidth: 3,
+                          }}
+                        />
+                      );
+                    })
+                )}
               </View>
             </ScrollView>
           </SafeAreaView>
@@ -148,7 +172,7 @@ export default function Leaderboard() {
           alignItems: "center",
         }}
       >
-        < Overlay />
+        <Overlay />
         <View style={styles.container}>
           <Switch
             trackColor={{ false: "#74868B", true: "#49575B" }}
@@ -177,15 +201,38 @@ export default function Leaderboard() {
               horizontal={true}
               contentContainerStyle={styles2.contentContainer}
             >
-              <View style={{ margin: 30, height: 50 }}>
-                { users.length == 0 ? <Text>Loading...</Text> : users.filter(e => e.photoURL).map((user) => {
-                  return (
-                    <Image
-                      source={{ uri: user.photoURL }}
-                      style={{ width: 50, height: 50, borderRadius: 50 }}
-                    />
-                  );
-                }) }
+              <View
+                style={{
+                  margin: 30,
+                  height: 50,
+                  flex: 1,
+                  flexDirection: "row",
+                }}
+              >
+                {users.length == 0 ? (
+                  <Text>Loading...</Text>
+                ) : (
+                  users
+                    .filter((e) => e.photoURL)
+                    .map((user) => {
+                      return (
+                        <Image
+                          source={{
+                            uri: user.photoURL,
+                            referrerPolicy: "no-referrer",
+                          }}
+                          style={{
+                            width: 50,
+                            height: 50,
+                            borderRadius: 50,
+                            marginHorizontal: 10,
+                            borderColor: user.color ? user.color : "black",
+                            borderWidth: 3,
+                          }}
+                        />
+                      );
+                    })
+                )}
               </View>
             </ScrollView>
           </SafeAreaView>
@@ -220,7 +267,7 @@ export default function Leaderboard() {
                   top: 100,
                 }}
               >
-              {/* {geostate && Object.entries(geostate).map(([user, geometry]) => {
+                {/* {geostate && Object.entries(geostate).map(([user, geometry]) => {
                 console.log(geometry)
                   return (
                     <Text key={user}>
