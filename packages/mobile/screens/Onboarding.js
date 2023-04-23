@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FlatList,
   ImageBackground,
@@ -10,12 +10,16 @@ import {
   Modal,
   Dimensions,
   Image,
+  SafeAreaView,
+  Pressable,
 } from "react-native";
 import { ColorPicker } from "react-native-color-picker";
 
 import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import { StatusBar } from "expo-status-bar";
+import { useNavigation } from "@react-navigation/native";
 
 export default function SettingsScreen() {
   const currentUser = auth().currentUser;
@@ -25,10 +29,10 @@ export default function SettingsScreen() {
       padding: 10,
     },
     circle: {
-      width: 50,
-      height: 50,
+      width: 45,
+      height: 45,
       borderRadius: 25,
-      margin: 5,
+      margin: 3,
     },
   });
   const renderItem = ({ item }) => (
@@ -70,7 +74,7 @@ export default function SettingsScreen() {
     { color: "green", hex: color, isCustom: true },
   ];
 
-  const [borderColor, setBorderColor] = useState(null);
+  const [borderColor, setBorderColor] = useState("transparent");
 
   const [loggedIn, setLoggedIn] = useState(false);
   const [location, setLocation] = useState(null);
@@ -87,36 +91,7 @@ export default function SettingsScreen() {
     setBorderColor(newColor);
   };
 
-  // Take the current user and push their profile page and display name to firebase
   useEffect(() => {
-    const updateCoreUser = async () => {
-      try {
-        const doc = await userRef.get();
-        if (doc.exists) {
-          await userRef.update({
-            displayName: currentUser.displayName,
-            photoURL: currentUser.photoURL,
-          });
-          console.log("User updated!");
-        } else {
-          await userRef.set({
-            displayName: currentUser.displayName,
-            photoURL: currentUser.photoURL,
-          });
-          console.log("New user created!");
-        }
-      } catch (error) {
-        console.error("Something went wrong with Firestore.", error);
-      }
-    };
-    updateCoreUser();
-  }, [])
-
-  useEffect(() => {
-    if (borderColor == null) {
-      return;
-    }
-
     const updateUser = async () => {
       try {
         const doc = await userRef.get();
@@ -166,120 +141,164 @@ export default function SettingsScreen() {
   } else {
     console.log("User is not signed in with Google");
   }
-
+  const navigation = useNavigation();
+  const signUp = () => {
+    navigation.navigate("Leaderboard");
+  };
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      {/*Add the Image Color so that it will fit fully on the screen */}
-      <ImageBackground
-        source={require("../assets/homescreen_background.png")}
-        style={{ flex: 1, width: "100%", height: "100%", position: "absolute" }}
-      />
-      {/*Add text at the top of the screen that says Profile, with 50
-       pixels of white space above it*/}
-      <Text
-        style={{
-          color: "white",
-          fontSize: 30,
-          marginTop: "50%",
-          fontFamily: "Raleway",
-        }}
-      >
-        Profile
-      </Text>
-      {/*Add a circle that will be the profile picture, with a width and height of 100 pixels
-       */}
-
-      {/* If the userprofile picture exists, create a 100 by 100 Image circle of it with radius 50
-       with the border color of borderColor*/}
-
-      {/*Add a flatlist that will display the colors in a circle and in 2 x 5 grid
-       */}
-      <View style={{ alignItems: "center" }}>
-        {currentUser.photoURL ? (
-          <Image
-            source={{ uri: currentUser.photoURL }}
-            style={{
-              width: 100,
-              height: 100,
-              borderRadius: 100 / 2,
-              borderColor: borderColor,
-              borderWidth: 2,
-              marginTop: 50,
-              marginBottom: "20%",
-            }}
-          />
-        ) : (
-          <View
-            style={{
-              width: 100,
-              height: 100,
-              borderRadius: 100 / 2,
-              borderColor: borderColor,
-              marginTop: 50,
-              backgroundColor: "white",
-              borderWidth: 2,
-            }}
-          />
-        )}
-      </View>
-
-      <FlatList
-        data={colors}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.color}
-        numColumns={5}
-      />
-
-      {showColorPicker && (
-        <Modal transparent={true} visible={showColorPicker}>
-          <TouchableOpacity
-            style={{
-              position: "absolute",
-              top: 0,
-              bottom: 0,
-              left: 0,
-              right: 0,
-              backgroundColor: "black",
-              opacity: overlayOpacity,
-            }}
-            onPress={() => setShowColorPicker(false)}
-          />
-          <View
+    <>
+      <StatusBar />
+      <SafeAreaView style={{ flex: 1, backgroundColor: "#B9E1EA" }}>
+        <View style={{ flex: 1, top: -2 }}>
+          <ImageBackground
+            source={require("../assets/homescreen_background.png")}
+            imageStyle={{ opacity: 0.2 }}
             style={{
               flex: 1,
-              position: "absolute",
-              top: "50%",
-              left: "75%",
-              transform: [{ translateX: -250 }, { translateY: -250 }],
-              width: 300,
-              height: 450,
-              borderRadius: 20,
+              height: "110%",
+              justifyContent: "center",
+              alignItems: "center",
+
+              bottom: -50,
             }}
           >
-            <ColorPicker
-              onColorSelected={handleColorChange}
-              style={{ flex: 1 }}
-            />
-          </View>
-        </Modal>
-      )}
+            {/*Add text at the top of the screen that says Profile, with 50
+       pixels of white space above it*/}
+            <View style={{ alignItems: "center", marginTop: 130 }}>
+              <Text
+                style={{
+                  color: "black",
+                  fontSize: 35,
+                  fontWeight: "bold",
+                  fontFamily: "Raleway",
+                }}
+              >
+                Profile Setup
+              </Text>
+              {/*Add a circle that will be the profile picture, with a width and height of 100 pixels
+               */}
 
-      {/*Add a textInput that asks the user for their address using #00364A
-       as the border color with a 2 pixel border with rounded edges */}
-      <TextInput
-        style={{
-          height: 40,
-          borderColor: "#00364A",
-          borderWidth: 2,
-          borderRadius: 10,
-          width: 300,
-          marginBottom: 0,
-        }}
-        onChangeText={(text) => setLocation(text)}
-        value={location}
-        placeholder="   Address"
-      />
-      {/*finish closing all the tags*/}
-    </View>
+              {/* If the userprofile picture exists, create a 100 by 100 Image circle of it with radius 50
+             with the border color of borderColor*/}
+
+              {/*Add a flatlist that will display the colors in a circle and in 2 x 5 grid
+               */}
+              <View style={{ alignItems: "center" }}>
+                {currentUser.photoURL ? (
+                  <Image
+                    source={{ uri: currentUser.photoURL }}
+                    style={{
+                      width: 80,
+                      height: 80,
+                      borderRadius: 80 / 2,
+                      borderColor: borderColor,
+                      borderWidth: 3,
+                      margin: "5%",
+                    }}
+                  />
+                ) : (
+                  <View
+                    style={{
+                      width: 80,
+                      height: 80,
+                      borderRadius: 80 / 2,
+                      borderColor: borderColor,
+                      backgroundColor: "white",
+                      borderWidth: 3,
+                      margin: "5%",
+                    }}
+                  />
+                )}
+              </View>
+
+              <FlatList
+                data={colors}
+                renderItem={renderItem}
+                keyExtractor={(item) => item.color}
+                numColumns={5}
+              />
+
+              {showColorPicker && (
+                <Modal transparent={true} visible={showColorPicker}>
+                  <TouchableOpacity
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      backgroundColor: "black",
+                      opacity: overlayOpacity,
+                    }}
+                    onPress={() => setShowColorPicker(false)}
+                  />
+                  <View
+                    style={{
+                      flex: 1,
+                      position: "absolute",
+                      top: "50%",
+                      left: "75%",
+                      transform: [{ translateX: -250 }, { translateY: -250 }],
+                      width: 200,
+                      height: 450,
+                      borderRadius: 20,
+                    }}
+                  >
+                    <ColorPicker
+                      onColorSelected={handleColorChange}
+                      style={{ flex: 1 }}
+                    />
+                  </View>
+                </Modal>
+              )}
+
+              {/*Add a textInput that asks the user for their address using #00364A
+             as the border color with a 2 pixel border with rounded edges */}
+              <TextInput
+                style={{
+                  height: 50,
+                  borderColor: "#00364A",
+                  borderWidth: 2,
+                  borderRadius: 10,
+                  width: 300,
+                  position: "relative",
+                  bottom: 240,
+                  fontSize: 20,
+                }}
+                onChangeText={(text) => setLocation(text)}
+                value={location}
+                placeholder="   Address"
+              />
+            </View>
+            <Pressable
+              style={{
+                alignSelf: "center",
+                backgroundColor: "#00364A",
+                padding: 10,
+                paddingHorizontal: 20,
+                borderTopRightRadius: 15,
+                borderTopLeftRadius: 15,
+                borderBottomLeftRadius: 15,
+                borderBottomRightRadius: 15,
+                position: "relative",
+                bottom: 220,
+              }}
+              onPress={signUp}
+            >
+              <Text
+                style={{
+                  fontFamily: "Raleway",
+                  fontSize: 20,
+                  color: "#EAF0F1",
+                }}
+              >
+                Sign Up
+              </Text>
+            </Pressable>
+            {/*finish closing all the tags*/}
+          </ImageBackground>
+        </View>
+      </SafeAreaView>
+    </>
   );
 }

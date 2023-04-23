@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-
 import {
   Text,
   View,
@@ -9,10 +8,11 @@ import {
   StyleSheet,
   TouchableOpacity,
   PermissionsAndroid,
+  Pressable,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import firestore from "@react-native-firebase/firestore";
 import SignUp from "./SignUp";
-import { SafeAreaView, ScrollView } from "react-native";
 import {
   GoogleSignin,
   GoogleSigninButton,
@@ -27,7 +27,6 @@ GoogleSignin.configure({
   webClientId: "",
 });
 import Geolocation from "react-native-geolocation-service";
-import * as userRef from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 //const usersCollection = firestore().collection("users");
 
 export default function HomeScreen() {
@@ -52,7 +51,7 @@ export default function HomeScreen() {
       {
         /*switch screens to leaderboard.js */
       }
-      //navigation.navigate("Onboarding");
+      navigation.navigate("Onboarding");
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
@@ -85,83 +84,155 @@ export default function HomeScreen() {
     });
   }, []);
 
+  // Function to get permission for location
+  const requestLocationPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: "Geolocation Permission",
+          message: "Can we access your location?",
+          buttonNeutral: "Ask Me Later",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK",
+        }
+      );
+      console.log("granted", granted);
+      if (granted === "granted") {
+        console.log("You can use Geolocation");
+        return true;
+      } else {
+        console.log("You cannot use Geolocation");
+        return false;
+      }
+    } catch (err) {
+      return false;
+    }
+  };
+
+  requestLocationPermission();
+
   // Handle user state changes
   function onAuthStateChanged(user) {
     setUser(user);
     console.log(user);
     if (initializing) setInitializing(false);
   }
-  const userId = "6bZjXrBqDyHkVvELMg79";
-  useEffect(() => {}, [user]);
-  firestore()
-    .collection("users")
-    .doc(userId)
-    .get()
-    .then((documentSnapshot) => {
-      if (documentSnapshot.exists) {
-        firestore()
-          .collection("users")
-          .doc(userId)
-          .update({
-            name: user.displayName,
-            photoURL: user.photoURL,
-          })
-          .then(() => {
-            console.log("User updated!");
-          });
-      } else {
-        firestore()
-          .collection("users")
-          .doc(userId)
-          .set({
-            name: user.displayName,
-            photoURL: user.photoURL,
-          })
-          .then(() => {
-            console.log("User added!");
-          });
-      }
-    });
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber; // unsubscribe on unmount
   }, []);
+  const apiUrl = "http://172.190.74.123:8000";
+  const groupid = "welsar-friends";
+
+  console.log("At use effect");
+
+  useEffect(() => {
+    console.log("User:");
+    console.log(user);
+
+    if (user) {
+      console.log("Hi");
+
+      const getTokenAndPingLocation = async () => {
+        try {
+          const token = await user.getIdToken();
+          console.log(token);
+
+          if (!location) return;
+
+          const pingData = {
+            userid: user.uid,
+            groupid: groupid,
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+          };
+
+          const response = await fetch(`${apiUrl}/ping_location`, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(pingData),
+          });
+          // console.log(response)
+          const responseData = await response.json();
+          console.log(responseData);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+      getTokenAndPingLocation();
+    }
+  }, [user, location]);
 
   if (initializing) return null;
 
   return (
-    <View style={{ flex: 1 }}>
-      <ImageBackground
-        source={require("../assets/homescreen_background.png")}
-        style={{ flex: 1, height: "100%", justifyContent: "center" }}
-      >
-        <View style={{ alignItems: "center" }}>
-          {/* Add text that says "Sign In" */}
-          <Text
+    <>
+      <StatusBar />
+      <SafeAreaView style={{ flex: 1, backgroundColor: "#B9E1EA" }}>
+        <View style={{ flex: 1, top: -2 }}>
+          <ImageBackground
+            source={require("../assets/homescreen_background.png")}
             style={{
-              fontFamily: "Raleway",
-              fontSize: 35,
-              color: "black",
-              marginBottom: 30,
+              flex: 1,
+              height: "120%",
+              justifyContent: "center",
             }}
           >
-            Sign In
-          </Text>
+            {/* Add text that says "Sign In" */}
+            <Text
+              style={{
+                fontFamily: "Raleway",
+                fontSize: 35,
+                color: "black",
+                marginBottom: 30,
+                fontWeight: "bold",
+                alignSelf: "center",
+                position: "relative",
+                bottom: -100,
+              }}
+            >
+              Welcome!
+            </Text>
 
-          {/* Add Google sign-in button */}
-          <View style={{ width: "80%" }}>
-            <GoogleSigninButton
-              style={{ alignSelf: "center" }}
-              size={GoogleSigninButton.Size.Wide}
-              color={GoogleSigninButton.Color.Dark}
-              onPress={signIn}
-            />
-          </View>
+            {/* Add Google sign-in button */}
+            <View style={{ width: "100%", alignItems: "center" }}>
+              <Pressable
+                style={{
+                  alignSelf: "center",
+                  backgroundColor: "#00364A",
+                  padding: 10,
+                  paddingHorizontal: 20,
+                  borderTopRightRadius: 15,
+                  borderTopLeftRadius: 15,
+                  borderBottomLeftRadius: 15,
+                  borderBottomRightRadius: 15,
+                  position: "relative",
+                  bottom: -100,
+                }}
+                onPress={signIn}
+              >
+                <Text
+                  style={{
+                    fontFamily: "Raleway",
+                    fontSize: 20,
+                    color: "#EAF0F1",
+                  }}
+                >
+                  Sign in with Google
+                </Text>
+              </Pressable>
+            </View>
 
-          {/* Add logged in status and log out button */}
+            {/* Add logged in status and log out button */}
+          </ImageBackground>
         </View>
-      </ImageBackground>
-    </View>
+      </SafeAreaView>
+    </>
   );
 }

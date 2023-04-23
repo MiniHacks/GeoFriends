@@ -1,6 +1,6 @@
 import "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
@@ -15,7 +15,7 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 
 const Tab = createMaterialTopTabNavigator();
 
-export default function App() {
+function MyTabs() {
   const [user, setUser] = useState(null);
   const [initializing, setInitializing] = useState(true);
   const [location, setLocation] = useState(false);
@@ -133,6 +133,59 @@ export default function App() {
   if (initializing) return null;
 
   return (
+    <Tab.Navigator
+      initialRouteName="Sign In"
+      screenOptions={{
+        tabBarActiveTintColor: "#e91e63",
+        headerShown: false,
+      }}
+    >
+      <Tab.Screen
+        name="HomeScreen"
+        component={HomeScreen}
+        options={{
+          tabBarLabel: "HomeScreen",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="home" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Leaderboard"
+        component={Leaderboard}
+        options={{
+          tabBarLabel: "Leaderboard",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="home" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Onboarding"
+        component={Onboarding}
+        options={{
+          tabBarLabel: "Onboarding",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="bell" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="ExpoCamera"
+        component={ExpoCamera}
+        options={{
+          tabBarLabel: "ExpoCamera",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="bell" color={color} size={size} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  );
+}
+
+export default function App() {
+  return (
     //Fix the navigation container so you can swipe between screens
 
     <NavigationContainer>
@@ -141,19 +194,31 @@ export default function App() {
         initialRouteName="Home"
         screenOptions={{
           headerShown: false,
-        }}
-        /* hidden tab bar */
-        tabBarOptions={{
-          tabStyle: { height: 0, maxHeight: 0 },
-          style: { backgroundColor: "transparent",   display: "none" },
+          tabBarItemStyle: {
+            height: 0,
+            maxHeight: 0,
+          },
+          tabBarStyle: {
+            backgroundColor: "transparent",
+            display: "none",
+          },
         }}
       >
-        { !user ? <Tab.Screen name="Home" component={HomeScreen} /> :
-        <>
-          <Tab.Screen name="Onboarding" component={Onboarding} />
+        <Fragment>
+          <Tab.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{ swipeEnabled: false }}
+          />
+
+          <Tab.Screen
+            name="Onboarding"
+            component={Onboarding}
+            options={{ swipeEnabled: false }}
+          />
           <Tab.Screen name="Leaderboard" component={Leaderboard} />
           <Tab.Screen name="ExpoCamera" component={ExpoCamera} />
-        </> }
+        </Fragment>
       </Tab.Navigator>
     </NavigationContainer>
   );
