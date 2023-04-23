@@ -276,19 +276,25 @@ const Map = () => {
   const [images, setImages] = useState([]);
 
   useEffect(() => {
-    const imagesRef = firebase.firestore().collection('images');
-    imagesRef.get().then(querySnapshot => {
-      const newImages = [];
-      querySnapshot.forEach(doc => {
-        console.log(doc.id, " => ", doc.data());
-        newImages.push({latitude: doc.data().latitude, longitude: doc.data().longitude, url: doc.data().url});
+    const imagesRef = firebase.firestore().collection("images");
+    imagesRef
+      .get()
+      .then((querySnapshot) => {
+        const newImages = [];
+        querySnapshot.forEach((doc) => {
+          console.log(doc.id, " => ", doc.data());
+          newImages.push({
+            latitude: doc.data().latitude,
+            longitude: doc.data().longitude,
+            url: doc.data().url,
+          });
+        });
+        setImages(newImages);
+        console.log("markers", newImages);
+      })
+      .catch((error) => {
+        console.log("Error getting documents: ", error);
       });
-      setImages(newImages);
-      console.log("markers",newImages);
-    })
-    .catch(error => {
-      console.log("Error getting documents: ", error);
-    });
   }, []);
 
   const polygons =
@@ -300,6 +306,7 @@ const Map = () => {
         //const fillColor = userObj ? userObj.color : "green";
 
         // console.log("userObj", user, userObj, userObj ? userObj.color : "#228B22", (userObj ? userObj.color : "#228B22") + "80");
+
         return (
           <Geojson
             key={user}
@@ -320,22 +327,32 @@ const Map = () => {
         provider={PROVIDER_GOOGLE}
       >
         {polygons}
-        { images.map((image) => {
+        {images.map((image) => {
           console.log("image", image);
           console.log("marker", image.latitude, image.longitude, image.url);
           return (
             <Marker
               key={image.url}
-              coordinate={{latitude: image.latitude, longitude: image.longitude}}
+              coordinate={{
+                latitude: image.latitude,
+                longitude: image.longitude,
+              }}
             >
               <Image
-                source={{uri: image.url}}
-                style={{width: 40, height: 50, border: "1px solid black", borderRadius: 10}}
+                source={{ uri: image.url }}
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderColor: "#FE5F55",
+                  borderStyle: "solid",
+                  borderWidth: 1,
+                  borderRadius: 300,
+                }}
                 resizeMode="contain"
               />
             </Marker>
           );
-        }) }
+        })}
       </MapView>
     </View>
   );
