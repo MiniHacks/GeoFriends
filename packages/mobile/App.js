@@ -10,6 +10,8 @@ import Leaderboard from "./screens/Leaderboard";
 import auth from "@react-native-firebase/auth";
 import Geolocation from "react-native-geolocation-service";
 import ExpoCamera from "./screens/ExpoCamera";
+import EditProfile from "./screens/EditProfile";
+import Profile from "./screens/Profile";
 
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
@@ -171,10 +173,10 @@ function MyTabs() {
         }}
       />
       <Tab.Screen
-        name="ExpoCamera"
-        component={ExpoCamera}
+        name="Profile"
+        component={Profile}
         options={{
-          tabBarLabel: "ExpoCamera",
+          tabBarLabel: "Profiles",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="bell" color={color} size={size} />
           ),
@@ -217,7 +219,12 @@ export default function App() {
             options={{ swipeEnabled: false }}
           />
           <Tab.Screen name="Leaderboard" component={Leaderboard} />
-          <Tab.Screen name="ExpoCamera" component={ExpoCamera} />
+          <Tab.Screen name="Profile" component={Profile} />
+          <Tab.Screen
+            name="EditProfile"
+            component={EditProfile}
+            options={{ swipeEnabled: false }}
+          />
         </Fragment>
       </Tab.Navigator>
     </NavigationContainer>
