@@ -128,6 +128,7 @@ export default function Leaderboard() {
                     .map((user) => {
                       return (
                         <Image
+                          key={user.id}
                           source={{
                             uri: user.photoURL,
                             referrerPolicy: "no-referrer",
@@ -216,6 +217,7 @@ export default function Leaderboard() {
                     .map((user) => {
                       return (
                         <Image
+                          key={user.id}
                           source={{
                             uri: user.photoURL,
                             referrerPolicy: "no-referrer",
