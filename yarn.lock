@@ -5173,6 +5173,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-navigation/material-top-tabs@npm:^6.6.2":
+  version: 6.6.2
+  resolution: "@react-navigation/material-top-tabs@npm:6.6.2"
+  dependencies:
+    color: ^4.2.3
+    warn-once: ^0.1.0
+  peerDependencies:
+    "@react-navigation/native": ^6.0.0
+    react: "*"
+    react-native: "*"
+    react-native-pager-view: ">= 4.0.0"
+    react-native-tab-view: ">= 3.0.0"
+  checksum: 674a46d486b071e84f4b96164b7e23b6a354816b940e96b9107ee89531a748318f52454292f84d1fc56106ff48d4d20576c6fc882631dbc0a63f714091ecee91
+  languageName: node
+  linkType: hard
+
 "@react-navigation/native@npm:^6.1.6":
   version: 6.1.6
   resolution: "@react-navigation/native@npm:6.1.6"
@@ -12908,6 +12924,7 @@ __metadata:
     "@react-native-firebase/firestore": ^17.4.2
     "@react-native-google-signin/google-signin": ^9.0.2
     "@react-navigation/bottom-tabs": ^6.5.7
+    "@react-navigation/material-top-tabs": ^6.6.2
     "@react-navigation/native": ^6.1.6
     "@supersami/rn-foreground-service": ^2.1.0
     expo: ~48.0.11
@@ -12921,7 +12938,9 @@ __metadata:
     react-native-gesture-handler: ^2.9.0
     react-native-linear-gradient: ^2.6.2
     react-native-maps: ^1.6.0
+    react-native-pager-view: ^6.2.0
     react-native-safe-area-context: ^4.5.1
+    react-native-tab-view: ^3.5.1
   languageName: unknown
   linkType: soft
 
@@ -14441,6 +14460,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-pager-view@npm:^6.2.0":
+  version: 6.2.0
+  resolution: "react-native-pager-view@npm:6.2.0"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 3006fe29f008d472ebfb654922302d138b08f56e7796627263424b5e91a3169dd9d0c450b5396efffd88d511197c5006180430a2b687d2d827926b324f8fb947
+  languageName: node
+  linkType: hard
+
 "react-native-safe-area-context@npm:^4.5.1":
   version: 4.5.1
   resolution: "react-native-safe-area-context@npm:4.5.1"
@@ -14448,6 +14477,19 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 5eb4e8d57f0fd072cbef74c7a31685149590706a3b0a05d7598fdbf6aa69707d09e9fb44494d2aa93c5f4ec9b669da10476b5e858f6b92d1d4290c3f94e43c4b
+  languageName: node
+  linkType: hard
+
+"react-native-tab-view@npm:^3.5.1":
+  version: 3.5.1
+  resolution: "react-native-tab-view@npm:3.5.1"
+  dependencies:
+    use-latest-callback: ^0.1.5
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+    react-native-pager-view: "*"
+  checksum: 22213e8bde3b0e16631d290a3da146789dcad461dbdc424cf6448c683a2d75c12abbae5aa329c83788123f6dd0865b451ba57848856483607327fb5fdad2fe12
   languageName: node
   linkType: hard
 
