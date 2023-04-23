@@ -232,6 +232,7 @@ const Map = () => {
       (response) => {
         response.json().then((data) => {
           //   iterate through every object in data
+          console.log("update geostate in overlay", geostate);
           setGeostate(data);
         });
       }
@@ -280,12 +281,12 @@ const Map = () => {
         const userObj = users[user];
         //const fillColor = userObj ? userObj.color : "green";
 
-        console.log("userObj", user, userObj);
+        console.log("userObj", user, userObj, userObj ? userObj.color : "#228B22", (userObj ? userObj.color : "#228B22") + "80");
         return (
           <Geojson
             key={user}
-            strokeColor="red"
-            fillColor={userObj ? userObj.color : "green"}
+            strokeColor={userObj ? userObj.color : "#228B22"}
+            fillColor={(userObj ? userObj.color : "#228B22") + "80"}
             strokeWidth={2}
             geojson={shittemplate(geometry)}
           />

@@ -70,7 +70,7 @@ export default function SettingsScreen() {
     { color: "green", hex: color, isCustom: true },
   ];
 
-  const [borderColor, setBorderColor] = useState("transparent");
+  const [borderColor, setBorderColor] = useState(null);
 
   const [loggedIn, setLoggedIn] = useState(false);
   const [location, setLocation] = useState(null);
@@ -88,6 +88,10 @@ export default function SettingsScreen() {
   };
 
   useEffect(() => {
+    if (borderColor == null) {
+      return;
+    }
+
     const updateUser = async () => {
       try {
         const doc = await userRef.get();

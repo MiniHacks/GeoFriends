@@ -14,7 +14,7 @@ import { firebase } from "@react-native-firebase/auth";
 import { StatusBar } from "expo-status-bar";
 
 export default function Leaderboard() {
-  const [isEnabled, setIsEnabled] = useState(true);
+  const [isEnabled, setIsEnabled] = useState(false);
   const GROUP = "welsar-friends";
   const [geostate, setGeostate] = useState([]);
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
