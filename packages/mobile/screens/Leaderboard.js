@@ -59,7 +59,6 @@ export default function Leaderboard() {
     return db.collection("users").onSnapshot((snapshot) => {
       const postData = [];
       snapshot.forEach((doc) => postData.push({ ...doc.data(), id: doc.id }));
-      console.log(postData);
       setUsers(postData);
     });
   }, []);
@@ -258,24 +257,24 @@ export default function Leaderboard() {
 
           <SafeAreaView style={styles1.container}>
             <ScrollView contentContainerStyle={styles3.contentContainer}>
-              <Text
+              <View
                 style={{
-                  height: 100,
+                  height: 500,
                   margin: 30,
-                  position: "relative",
                   fontFamily: "Raleway",
-                  top: 100,
+                  top: 175,
+                  pointerEvents: "none",
                 }}
               >
-                {/* {geostate && Object.entries(geostate).map(([user, geometry]) => {
-                console.log(geometry)
-                  return (
+              {geostate && Object.entries(geostate).map(([user, geometry]) => {
+                console.log("geostate of ", geometry)
+                const firebaseUser = users.find(e => e.id == user)
+                  return firebaseUser ? 
                     <Text key={user}>
-                      {user} + {(geometry.area * 1000000).toFixed(2)}
-                    </Text>
-                  );
-                })} */}
-              </Text>
+                      {firebaseUser.displayName} {(geometry.area * 1000000).toFixed(2)}
+                    </Text> : <></>;
+                })}
+              </View>
             </ScrollView>
           </SafeAreaView>
         </View>

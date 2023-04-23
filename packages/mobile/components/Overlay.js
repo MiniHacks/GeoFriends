@@ -281,7 +281,7 @@ const Map = () => {
         const userObj = users[user];
         //const fillColor = userObj ? userObj.color : "green";
 
-        console.log("userObj", user, userObj, userObj ? userObj.color : "#228B22", (userObj ? userObj.color : "#228B22") + "80");
+        // console.log("userObj", user, userObj, userObj ? userObj.color : "#228B22", (userObj ? userObj.color : "#228B22") + "80");
         return (
           <Geojson
             key={user}
