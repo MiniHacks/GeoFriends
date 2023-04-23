@@ -197,8 +197,8 @@ export default function App() {
         }}
         /* hidden tab bar */
         tabBarOptions={{
-          tabStyle: { height: 0 },
-          style: { backgroundColor: "transparent" },
+          tabStyle: { height: 0, maxHeight: 0 },
+          style: { backgroundColor: "transparent",   display: "none" },
         }}
       >
         <Tab.Screen name="Home" component={HomeScreen} />
