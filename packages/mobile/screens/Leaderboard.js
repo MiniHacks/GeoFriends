@@ -99,10 +99,10 @@ export default function Leaderboard() {
             bottom: 0,
             position: "absolute",
             width: 360,
-            height: 120,
+            height: 100,
             backgroundColor: "rgba(233, 238, 240, 0.9)",
-            borderTopLeftRadius: 30,
-            borderTopRightRadius: 30,
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
             alignItems: "center",
             borderColor: "rgba(100,100,100,0.5)",
             borderWidth: 2,
@@ -115,7 +115,7 @@ export default function Leaderboard() {
             >
               <View
                 style={{
-                  margin: 30,
+                  margin: 20,
                   height: 50,
                   flex: 1,
                   flexDirection: "row",
@@ -154,9 +154,9 @@ export default function Leaderboard() {
             position: "absolute",
             bottom: 70,
             fontFamily: "Raleway",
-            fontSize: 25,
+            fontSize: 20,
             color: "black",
-            marginTop: 10,
+            marginTop: 5,
           }}
         >
           Who was here?
@@ -187,10 +187,10 @@ export default function Leaderboard() {
             bottom: 0,
             position: "absolute",
             width: 360,
-            height: 120,
+            height: 100,
             backgroundColor: "rgba(233, 238, 240, 0.9)",
-            borderTopLeftRadius: 30,
-            borderTopRightRadius: 30,
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
             alignItems: "center",
             borderColor: "rgba(100,100,100,0.5)",
             borderWidth: 2,
@@ -203,7 +203,7 @@ export default function Leaderboard() {
             >
               <View
                 style={{
-                  margin: 30,
+                  margin: 20,
                   height: 50,
                   flex: 1,
                   flexDirection: "row",
@@ -284,9 +284,9 @@ export default function Leaderboard() {
             position: "absolute",
             bottom: 70,
             fontFamily: "Raleway",
-            fontSize: 25,
+            fontSize: 20,
             color: "black",
-            marginTop: 10,
+            marginTop: 5,
           }}
         >
           Who was here?
