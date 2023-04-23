@@ -67,7 +67,7 @@ const ExpoCamera = () => {
                             groupid: groupid,
                             latitude: position.coords.latitude,
                             longitude: position.coords.longitude,
-                            radius: 0.04
+                            radius: 0.004
                           };
 
                           let photoResponse = await fetch(photo.uri);

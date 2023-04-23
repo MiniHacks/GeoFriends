@@ -17,7 +17,7 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 
 const Tab = createMaterialTopTabNavigator();
 
-function MyTabs() {
+export default function App() {
   const [user, setUser] = useState(null);
   const [initializing, setInitializing] = useState(true);
   const [location, setLocation] = useState(false);
@@ -134,25 +134,7 @@ function MyTabs() {
 
   if (initializing) return null;
 
-  return (
-    <Tab.Navigator
-      initialRouteName="HomeScreen"
-      screenOptions={{
-        tabBarActiveTintColor: "#e91e63",
-        headerShown: false,
-      }}
-    >
-      <Tab.Screen name="HomeScreen" component={HomeScreen} />
-      <Tab.Screen name="Leaderboard" component={Leaderboard} />
-      <Tab.Screen name="Feed" component={Feed} />
-      <Tab.Screen name="Profile" component={Profile} />
-      <Tab.Screen name="EditProfile" component={EditProfile} />
-      <Tab.Screen name="Onboarding" component={Onboarding} />
-    </Tab.Navigator>
-  );
-}
 
-export default function App() {
   return (
     //Fix the navigation container so you can swipe between screens
 

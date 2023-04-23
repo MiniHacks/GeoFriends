@@ -6,4 +6,4 @@ class PingLocationRequest(BaseModel):
     groupid: str
     latitude: float
     longitude: float
-    radius: Optional[float] = 0.01
+    radius: Optional[float] = 0.001
