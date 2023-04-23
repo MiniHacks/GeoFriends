@@ -165,13 +165,14 @@ export default function App() {
           <Tab.Screen name="Leaderboard" component={Leaderboard} />
           {/* <Tab.Screen name="Profile" component={Profile} /> */}
           <Tab.Screen
-            name="ExpoCamera"
-            component={ExpoCamera}
-          />
-          <Tab.Screen
             name="EditProfile"
             component={EditProfile}
           />
+          <Tab.Screen
+            name="ExpoCamera"
+            component={ExpoCamera}
+          />
+
 
         </Fragment>
       </Tab.Navigator>
