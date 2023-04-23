@@ -74,6 +74,18 @@ export default function Leaderboard() {
     );
   }, []);
 
+  useEffect(() => {
+    const imagesRef = firebase.firestore().collection('images');
+    imagesRef.get().then(querySnapshot => {
+      querySnapshot.forEach(doc => {
+        console.log(doc.id, " => ", doc.data());
+      });
+    })
+    .catch(error => {
+      console.log("Error getting documents: ", error);
+    });
+  }, []);
+
   if (!isEnabled) {
     return (
       <View

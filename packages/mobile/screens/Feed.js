@@ -13,10 +13,12 @@ import {
   SafeAreaView,
   Pressable,
 } from "react-native";
+import { useFocusEffect } from '@react-navigation/native';
 import { ColorPicker } from "react-native-color-picker";
 
 import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
+import storage from '@react-native-firebase/storage';
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { StatusBar } from "expo-status-bar";
 import { useNavigation } from "@react-navigation/native";
@@ -35,66 +37,50 @@ export default function SettingsScreen() {
       margin: 3,
     },
   });
-  const renderItem = ({ item }) => (
-    <TouchableOpacity onPress={() => handlePress(item.color)}>
-      <View
-        style={[
-          styles.circle,
-          { backgroundColor: item.hex },
-          item.isCustom && {
-            borderWidth: 4,
-            borderColor: "black",
-            borderRadius: 10,
-          },
-        ]}
-      />
-    </TouchableOpacity>
-  );
-
-  const [color, setColor] = useState("#000000");
-  const [showColorPicker, setShowColorPicker] = useState(false);
-  const overlayOpacity = showColorPicker ? 0.5 : 0;
-  const handlePress = (color) => {
-    if (color === "green") {
-      setShowColorPicker(true);
-    } else {
-      setBorderColor(colors.find((c) => c.color === color).hex);
-    }
-  };
-  const colors = [
-    { color: "red", hex: "#CC2936" },
-    { color: "orange", hex: "#EE5622" },
-    { color: "dark_blue", hex: "#4F4789" },
-    { color: "pink", hex: "#FC6DAB" },
-    { color: "pome", hex: "#B33C86" },
-    { color: "almost_tan", hex: "#FE5F55" },
-    { color: "orange_yellow", hex: "#F49F0A" },
-    { color: "hot_pink_kinda", hex: "#E63462" },
-    { color: "yellow", hex: "#FDCA40" },
-    { color: "green", hex: color, isCustom: true },
-  ];
 
   const [borderColor, setBorderColor] = useState("transparent");
-
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [location, setLocation] = useState(null);
-  const [userInfo, setUserInfo] = useState(null);
-  const [user, setUser] = useState(null);
-  const [initializing, setInitializing] = useState(true);
-  const [userProfilePicture, setUserProfilePicture] = useState(null);
-  const userRef = firestore().collection("users").doc(currentUser.uid);
-
-  const [userAddress, setUserAddress] = useState(null);
-  const handleColorChange = (newColor = "#000000") => {
-    setColor(newColor);
-    setShowColorPicker(false);
-    setBorderColor(newColor);
-  };
 
   const navigation = useNavigation();
   const save = () => {
     navigation.navigate("EditProfile");
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      // Your code to run when the screen is focused
+      const unsubscribe = firestore()
+        .collection("users")
+        .doc(currentUser.uid)
+        .onSnapshot((documentSnapshot) => {
+          setBorderColor(documentSnapshot.data().borderColor);
+        });
+
+        unsubscribe();
+
+      return () => {};
+    }, [])
+  );
+
+  useEffect(() => {
+    // Reference to the "geofriends" folder in Firebase Storage
+    const geofriendsRef = storage().ref().child('geofriends');
+
+    // List all the files in the "geofriends" folder
+    geofriendsRef.listAll().then((result) => {
+      result.items.forEach((itemRef) => {
+        // Get the download URL for each file in the folder
+        itemRef.getDownloadURL().then((url) => {
+          console.log('File download URL:', url);
+        }).catch((error) => {
+          console.error('Error getting file download URL:', error);
+        });
+      });
+    }).catch((error) => {
+      console.error('Error listing files in "geofriends" folder:', error);
+    });
+  }, []);
+  
+
   return (
     <>
       <StatusBar />

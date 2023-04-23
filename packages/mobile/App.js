@@ -183,10 +183,15 @@ export default function App() {
           <Tab.Screen name="Leaderboard" component={Leaderboard} />
           <Tab.Screen name="Profile" component={Profile} />
           <Tab.Screen
+            name="ExpoCamera"
+            component={ExpoCamera}
+          />
+          <Tab.Screen
             name="EditProfile"
             component={EditProfile}
             options={{ swipeEnabled: false }}
           />
+
         </Fragment>
       </Tab.Navigator>
     </NavigationContainer>

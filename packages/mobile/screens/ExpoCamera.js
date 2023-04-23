@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Camera, CameraType } from 'expo-camera';
 import { firebase } from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
+import storage from '@react-native-firebase/storage';
 import auth from '@react-native-firebase/auth';
 import Geolocation from "react-native-geolocation-service";
 
@@ -48,18 +49,9 @@ const ExpoCamera = () => {
                   console.log("No user signed in when uploading photo");
                   return;
                 }
-                
+
                 // Upload photo to Firebase
                 // Upload photo to Firebase
-                let response = await fetch(photo.uri);
-                let blob = await response.blob();
-
-                const userRef = await firestore().collection('users').doc(currentUser.uid);
-                await userRef.collection('photos').add({
-                  image: blob,
-                  timestamp: new Date(),
-                });
-
                 Geolocation.getCurrentPosition(
                   (position) => {
                     const user = auth().currentUser;
@@ -77,6 +69,35 @@ const ExpoCamera = () => {
                             longitude: position.coords.longitude,
                             radius: 0.04
                           };
+
+                          let photoResponse = await fetch(photo.uri);
+                          let blob = await photoResponse.blob();
+                          const imageRef = storage().ref().child('images/').child(Date.now().toString());
+          
+                          // Upload the image blob to Firebase Storage
+                          imageRef.put(blob).then((snapshot) => {
+                            console.log('Uploaded a blob to Firebase Storage!', snapshot);
+                          
+                            // Get the download URL for the image
+                            imageRef.getDownloadURL().then((url) => {
+                          
+                              // Add a reference to the image, along with its latitude and longitude, to a collection in Firestore
+                              firestore().collection('images').add({
+                                url: url,
+                                latitude: position.coords.latitude, // replace with actual latitude
+                                longitude: position.coords.longitude, // replace with actual longitude
+                              }).then((docRef) => {
+                                console.log('Document written with ID:', docRef.id);
+                              }).catch((error) => {
+                                console.error('Error adding document:', error);
+                              });
+                            }).catch((error) => {
+                              console.error('Error getting file download URL:', error);
+                            });
+                          }).catch((error) => {
+                            console.error('Error uploading blob to Firebase Storage', error);
+                          });
+          
                 
                           const response = await fetch(`${apiUrl}/ping_location`, {
                             method: "POST",

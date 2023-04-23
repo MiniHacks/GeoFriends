@@ -1,5 +1,5 @@
-import MapView, { Geojson, PROVIDER_GOOGLE } from "react-native-maps";
-import { Dimensions, StyleSheet, View } from "react-native";
+import MapView, { Marker, Geojson, PROVIDER_GOOGLE } from "react-native-maps";
+import { Dimensions, StyleSheet, View, Image } from "react-native";
 import React, { useEffect, useRef, useState } from "react"; // remove PROVIDER_GOOGLE import if not using Google Maps
 import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
@@ -273,6 +273,24 @@ const Map = () => {
       });
   }, []);
 
+  const [images, setImages] = useState([]);
+
+  useEffect(() => {
+    const imagesRef = firebase.firestore().collection('images');
+    imagesRef.get().then(querySnapshot => {
+      const newImages = [];
+      querySnapshot.forEach(doc => {
+        console.log(doc.id, " => ", doc.data());
+        newImages.push({latitude: doc.data().latitude, longitude: doc.data().longitude, url: doc.data().url});
+      });
+      setImages(newImages);
+      console.log("markers",newImages);
+    })
+    .catch(error => {
+      console.log("Error getting documents: ", error);
+    });
+  }, []);
+
   const polygons =
     geostate &&
     Object.entries(geostate)
@@ -302,6 +320,22 @@ const Map = () => {
         provider={PROVIDER_GOOGLE}
       >
         {polygons}
+        { images.map((image) => {
+          console.log("image", image);
+          console.log("marker", image.latitude, image.longitude, image.url);
+          return (
+            <Marker
+              key={image.url}
+              coordinate={{latitude: image.latitude, longitude: image.longitude}}
+            >
+              <Image
+                source={{uri: image.url}}
+                style={{width: 40, height: 50, border: "1px solid black", borderRadius: 10}}
+                resizeMode="contain"
+              />
+            </Marker>
+          );
+        }) }
       </MapView>
     </View>
   );
