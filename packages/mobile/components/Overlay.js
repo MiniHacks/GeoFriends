@@ -61,7 +61,7 @@ const Map = () => {
 // apply shoelace formula on template geometry
 
 
-  const polygons = geostate && Object.entries(geostate).map(([user, geometry]) => {
+  const polygons = geostate && Object.entries(geostate).filter(([user, geometry]) => geometry.geometry.length > 0).map(([user, geometry]) => {
     return (<Geojson
       key={user}
       strokeColor="red"
