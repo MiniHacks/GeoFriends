@@ -19,13 +19,13 @@ def update_geom(conn, lat, lon, userid, groupid, radius):
             SELECT ST_MakePoint(%s, %s) AS center
         ), upsert AS (
             INSERT INTO geometries (userid, groupid, geometry)
-            VALUES (%s, %s, ST_Buffer((SELECT center FROM input), %s, 'quad_segs=2'))
+            VALUES (%s, %s, ST_Buffer((SELECT center FROM input), %s, 'quad_segs=4'))
             ON CONFLICT (userid, groupid)
             DO UPDATE SET geometry = ST_Union((
                 SELECT geometry
                 FROM geometries
                 WHERE userid = %s AND groupid = %s
-            ), ST_Buffer((SELECT center  FROM input), %s, 'quad_segs=2'))
+            ), ST_Buffer((SELECT center  FROM input), %s, 'quad_segs=4'))
             RETURNING geometry
         )
         UPDATE geometries g

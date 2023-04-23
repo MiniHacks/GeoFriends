@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Camera, CameraType } from 'expo-camera';
+import { firebase } from '@react-native-firebase/app';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
+import Geolocation from "react-native-geolocation-service";
 
 const ExpoCamera = () => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -39,6 +43,65 @@ const ExpoCamera = () => {
               if (cameraRef) {
                 let photo = await cameraRef.takePictureAsync();
                 console.log(photo);
+                const currentUser = auth().currentUser;
+                if (!currentUser) {
+                  console.log("No user signed in when uploading photo");
+                  return;
+                }
+                
+                // Upload photo to Firebase
+                // Upload photo to Firebase
+                let response = await fetch(photo.uri);
+                let blob = await response.blob();
+
+                const userRef = await firestore().collection('users').doc(currentUser.uid);
+                await userRef.collection('photos').add({
+                  image: blob,
+                  timestamp: new Date(),
+                });
+
+                Geolocation.getCurrentPosition(
+                  (position) => {
+                    const user = auth().currentUser;
+                    if (user) {
+                      const getTokenAndPingLocation = async () => {
+                        try {
+                          const token = await user.getIdToken();
+                          const apiUrl = "http://172.190.74.123:8000";
+                          const groupid = "welsar-friends";
+                
+                          const pingData = {
+                            userid: user.uid,
+                            groupid: groupid,
+                            latitude: position.coords.latitude,
+                            longitude: position.coords.longitude,
+                            radius: 0.04
+                          };
+                
+                          const response = await fetch(`${apiUrl}/ping_location`, {
+                            method: "POST",
+                            headers: {
+                              Authorization: `Bearer ${token}`,
+                              "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify(pingData),
+                          });
+                          const responseData = await response.json();
+                          console.log(responseData);
+                        } catch (error) {
+                          console.log(error);
+                        }
+                      };
+                
+                      getTokenAndPingLocation();
+                    }
+                  },
+                  (error) => {
+                    // See error code charts below.
+                    console.log(error.code, error.message);
+                  },
+                  { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+                );
               }
             }}>
             <View style={styles.captureCircle} />
@@ -47,7 +110,7 @@ const ExpoCamera = () => {
       </Camera>
     </View>
   );
-};
+};  
 
 const styles = StyleSheet.create({
   container: {

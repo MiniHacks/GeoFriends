@@ -202,7 +202,7 @@ export default function App() {
         }}
       >
         <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Settings" component={SettingsScreen} />
+        <Tab.Screen name="Onboarding" component={Onboarding} />
         <Tab.Screen name="Leaderboard" component={Leaderboard} />
         <Tab.Screen name="ExpoCamera" component={ExpoCamera} />
       </Tab.Navigator>

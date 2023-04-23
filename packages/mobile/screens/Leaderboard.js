@@ -210,7 +210,7 @@ export default function Leaderboard() {
               {geostate && Object.entries(geostate).map(([user, geometry]) => {
                 console.log(geometry)
                   return (
-                    <Text>
+                    <Text key={user}>
                       {user} + {(geometry.area * 1000000).toFixed(2)}
                     </Text>
                   );
