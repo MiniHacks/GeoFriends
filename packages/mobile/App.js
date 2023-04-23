@@ -161,9 +161,9 @@ export default function App() {
             options={{ swipeEnabled: false }}
           />
           <Tab.Screen name="Onboarding" component={Onboarding} />
-          <Tab.Screen name="Feed" component={Feed} />
+          {/* <Tab.Screen name="Feed" component={Feed} /> */}
           <Tab.Screen name="Leaderboard" component={Leaderboard} />
-          <Tab.Screen name="Profile" component={Profile} />
+          {/* <Tab.Screen name="Profile" component={Profile} /> */}
           <Tab.Screen
             name="ExpoCamera"
             component={ExpoCamera}
@@ -171,7 +171,6 @@ export default function App() {
           <Tab.Screen
             name="EditProfile"
             component={EditProfile}
-            options={{ swipeEnabled: false }}
           />
 
         </Fragment>

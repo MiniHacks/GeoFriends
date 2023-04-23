@@ -155,7 +155,7 @@ export default function EditProfile() {
                 fontFamily: "Raleway",
               }}
             >
-              Edit Profile
+              Profile
             </Text>
             {/*Add a circle that will be the profile picture, with a width and height of 100 pixels
              */}
