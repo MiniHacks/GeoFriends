@@ -41,7 +41,10 @@ def update_geom(conn, lat, lon, userid, groupid):
         
 def get_group_geom(conn, groupid):
     get_group_geom_sql = """
-        SELECT jsonb_object_agg(userid, ST_AsGeoJSON(geometry)::jsonb) AS geometries_by_user
+        SELECT jsonb_object_agg(userid, jsonb_build_object(
+            'geometry', ST_AsGeoJSON(geometry)::jsonb,
+            'area', ST_Area(geometry)
+        )) AS geometries_by_user
         FROM geometries
         WHERE groupid = %s;
     """
