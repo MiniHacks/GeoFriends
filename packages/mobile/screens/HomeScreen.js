@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+
 import {
   Text,
   View,
@@ -26,6 +27,7 @@ GoogleSignin.configure({
   webClientId: "",
 });
 import Geolocation from "react-native-geolocation-service";
+import * as userRef from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 //const usersCollection = firestore().collection("users");
 
 export default function HomeScreen() {
@@ -117,6 +119,37 @@ export default function HomeScreen() {
     console.log(user);
     if (initializing) setInitializing(false);
   }
+  const userId = "6bZjXrBqDyHkVvELMg79";
+  useEffect(() => {}, [user]);
+  firestore()
+    .collection("users")
+    .doc(userId)
+    .get()
+    .then((documentSnapshot) => {
+      if (documentSnapshot.exists) {
+        firestore()
+          .collection("users")
+          .doc(userId)
+          .update({
+            name: user.displayName,
+            photoURL: user.photoURL,
+          })
+          .then(() => {
+            console.log("User updated!");
+          });
+      } else {
+        firestore()
+          .collection("users")
+          .doc(userId)
+          .set({
+            name: user.displayName,
+            photoURL: user.photoURL,
+          })
+          .then(() => {
+            console.log("User added!");
+          });
+      }
+    });
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);

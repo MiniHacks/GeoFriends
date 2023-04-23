@@ -5084,6 +5084,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-firebase/database@npm:^17.4.2":
+  version: 17.4.2
+  resolution: "@react-native-firebase/database@npm:17.4.2"
+  peerDependencies:
+    "@react-native-firebase/app": 17.4.2
+  checksum: 70db831da924bdda30a8c31c411b2b2c00ca671351f51d1bd378a4f81771866d395648f6c58df0f225b9207859d97bf4ef40f808e4caf906bf7c6f9a0d3fd298
+  languageName: node
+  linkType: hard
+
 "@react-native-firebase/firestore@npm:^17.4.2":
   version: 17.4.2
   resolution: "@react-native-firebase/firestore@npm:17.4.2"
@@ -10238,6 +10247,7 @@ __metadata:
   dependencies:
     "@commitlint/cli": ^17.4.4
     "@commitlint/config-conventional": ^17.4.4
+    "@react-native-firebase/database": ^17.4.2
     "@typescript-eslint/eslint-plugin": ^4.28.5
     "@typescript-eslint/parser": ^4.28.5
     commitlint-plugin-function-rules: ^1.7.1

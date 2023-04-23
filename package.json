@@ -41,6 +41,7 @@
     "prettier": "^2.5.1"
   },
   "dependencies": {
+    "@react-native-firebase/database": "^17.4.2",
     "native-base": "^3.4.28"
   }
 }
