@@ -1,7 +1,7 @@
+import "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
 import SettingsScreen from "./screens/SettingsScreen";
@@ -11,7 +11,9 @@ import auth from "@react-native-firebase/auth";
 import Geolocation from "react-native-geolocation-service";
 import ExpoCamera from "./screens/ExpoCamera";
 
-const Tab = createBottomTabNavigator();
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+
+const Tab = createMaterialTopTabNavigator();
 
 function MyTabs() {
   const [user, setUser] = useState(null);
@@ -78,7 +80,6 @@ function MyTabs() {
     //   //do your thing!
     // }
   };
-  
 
   requestLocationPermission();
 
@@ -98,7 +99,6 @@ function MyTabs() {
 
   useEffect(() => {
     if (user) {
-
       const getTokenAndPingLocation = async () => {
         try {
           const token = await user.getIdToken();
@@ -189,9 +189,25 @@ function MyTabs() {
 
 export default function App() {
   return (
+    //Fix the navigation container so you can swipe between screens
+
     <NavigationContainer>
-      <StatusBar style="auto" />
-      <MyTabs />
+      <Tab.Navigator
+        tabBarPosition="bottom"
+        screenOptions={{
+          headerShown: false,
+        }}
+        /* hidden tab bar */
+        tabBarOptions={{
+          tabStyle: { height: 0 },
+          style: { backgroundColor: "transparent" },
+        }}
+      >
+        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Settings" component={SettingsScreen} />
+        <Tab.Screen name="Leaderboard" component={Leaderboard} />
+        <Tab.Screen name="ExpoCamera" component={ExpoCamera} />
+      </Tab.Navigator>
     </NavigationContainer>
   );
 }

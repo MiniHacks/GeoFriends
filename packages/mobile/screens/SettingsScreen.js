@@ -18,19 +18,6 @@ import firestore from "@react-native-firebase/firestore";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 export default function SettingsScreen() {
-  const colors = [
-    { color: "red", hex: "#CC2936" },
-    { color: "orange", hex: "#EE5622" },
-    { color: "dark_blue", hex: "#4F4789" },
-    { color: "pink", hex: "#FC6DAB" },
-    { color: "pome", hex: "#B33C86" },
-    { color: "almost_tan", hex: "#FE5F55" },
-    { color: "orange_yellow", hex: "#F49F0A" },
-    { color: "hot_pink_kinda", hex: "#E63462" },
-    { color: "yellow", hex: "#FDCA40" },
-    { color: "green", hex: "#ffffff" },
-  ];
-
   const currentUser = auth().currentUser;
 
   const styles = StyleSheet.create({
@@ -46,7 +33,17 @@ export default function SettingsScreen() {
   });
   const renderItem = ({ item }) => (
     <TouchableOpacity onPress={() => handlePress(item.color)}>
-      <View style={[styles.circle, { backgroundColor: item.hex }]} />
+      <View
+        style={[
+          styles.circle,
+          { backgroundColor: item.hex },
+          item.isCustom && {
+            borderWidth: 4,
+            borderColor: "black",
+            borderRadius: 10,
+          },
+        ]}
+      />
     </TouchableOpacity>
   );
 
@@ -60,6 +57,18 @@ export default function SettingsScreen() {
       setBorderColor(colors.find((c) => c.color === color).hex);
     }
   };
+  const colors = [
+    { color: "red", hex: "#CC2936" },
+    { color: "orange", hex: "#EE5622" },
+    { color: "dark_blue", hex: "#4F4789" },
+    { color: "pink", hex: "#FC6DAB" },
+    { color: "pome", hex: "#B33C86" },
+    { color: "almost_tan", hex: "#FE5F55" },
+    { color: "orange_yellow", hex: "#F49F0A" },
+    { color: "hot_pink_kinda", hex: "#E63462" },
+    { color: "yellow", hex: "#FDCA40" },
+    { color: "green", hex: color, isCustom: true },
+  ];
 
   const [borderColor, setBorderColor] = useState("transparent");
 
