@@ -72,7 +72,6 @@ const Map = () => {
   });
 
   return (
-
     <View style={styles.container}>
       <MapView style={styles.map} ref={mapRef} initialRegion={region}
                provider={PROVIDER_GOOGLE}>

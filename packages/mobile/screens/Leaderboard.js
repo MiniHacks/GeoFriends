@@ -8,6 +8,7 @@ import {
   Text,
   View,
 } from "react-native";
+import Overlay from "../components/Overlay";
 import LinearGradient from "react-native-linear-gradient";
 import { firebase } from "@react-native-firebase/auth";
 import { StatusBar } from "expo-status-bar";
@@ -66,15 +67,7 @@ export default function Leaderboard() {
           alignItems: "center",
         }}
       >
-        <ImageBackground
-          source={require("../assets/UCLASampleMap.png")}
-          style={{
-            flex: 1,
-            width: "100%",
-            height: "100%",
-            position: "absolute",
-          }}
-        />
+        <Overlay />
         <View style={styles.container}>
           <Switch
             trackColor={{ false: "#74868B", true: "#49575B" }}
@@ -133,15 +126,7 @@ export default function Leaderboard() {
           alignItems: "center",
         }}
       >
-        <ImageBackground
-          source={require("../assets/UCLASampleMap.png")}
-          style={{
-            flex: 1,
-            width: "100%",
-            height: "100%",
-            position: "absolute",
-          }}
-        />
+        < Overlay />
         <View style={styles.container}>
           <Switch
             trackColor={{ false: "#74868B", true: "#49575B" }}
