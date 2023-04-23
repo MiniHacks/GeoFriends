@@ -70,7 +70,7 @@ export default function SettingsScreen() {
     { color: "green", hex: color, isCustom: true },
   ];
 
-  const [borderColor, setBorderColor] = useState("transparent");
+  const [borderColor, setBorderColor] = useState(null);
 
   const [loggedIn, setLoggedIn] = useState(false);
   const [location, setLocation] = useState(null);
@@ -87,7 +87,36 @@ export default function SettingsScreen() {
     setBorderColor(newColor);
   };
 
+  // Take the current user and push their profile page and display name to firebase
   useEffect(() => {
+    const updateCoreUser = async () => {
+      try {
+        const doc = await userRef.get();
+        if (doc.exists) {
+          await userRef.update({
+            displayName: currentUser.displayName,
+            photoURL: currentUser.photoURL,
+          });
+          console.log("User updated!");
+        } else {
+          await userRef.set({
+            displayName: currentUser.displayName,
+            photoURL: currentUser.photoURL,
+          });
+          console.log("New user created!");
+        }
+      } catch (error) {
+        console.error("Something went wrong with Firestore.", error);
+      }
+    };
+    updateCoreUser();
+  }, [])
+
+  useEffect(() => {
+    if (borderColor == null) {
+      return;
+    }
+
     const updateUser = async () => {
       try {
         const doc = await userRef.get();

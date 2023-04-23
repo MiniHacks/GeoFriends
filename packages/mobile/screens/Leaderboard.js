@@ -8,12 +8,13 @@ import {
   Text,
   View,
 } from "react-native";
+import Overlay from "../components/Overlay";
 import LinearGradient from "react-native-linear-gradient";
 import { firebase } from "@react-native-firebase/auth";
 import { StatusBar } from "expo-status-bar";
 
 export default function Leaderboard() {
-  const [isEnabled, setIsEnabled] = useState(true);
+  const [isEnabled, setIsEnabled] = useState(false);
   const GROUP = "welsar-friends";
   const [geostate, setGeostate] = useState([]);
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
@@ -66,15 +67,7 @@ export default function Leaderboard() {
           alignItems: "center",
         }}
       >
-        <ImageBackground
-          source={require("../assets/UCLASampleMap.png")}
-          style={{
-            flex: 1,
-            width: "100%",
-            height: "100%",
-            position: "absolute",
-          }}
-        />
+        <Overlay />
         <View style={styles.container}>
           <Switch
             trackColor={{ false: "#74868B", true: "#49575B" }}
@@ -133,15 +126,7 @@ export default function Leaderboard() {
           alignItems: "center",
         }}
       >
-        <ImageBackground
-          source={require("../assets/UCLASampleMap.png")}
-          style={{
-            flex: 1,
-            width: "100%",
-            height: "100%",
-            position: "absolute",
-          }}
-        />
+        < Overlay />
         <View style={styles.container}>
           <Switch
             trackColor={{ false: "#74868B", true: "#49575B" }}
@@ -207,14 +192,14 @@ export default function Leaderboard() {
                   top: 100,
                 }}
               >
-              {geostate && Object.entries(geostate).map(([user, geometry]) => {
+              {/* {geostate && Object.entries(geostate).map(([user, geometry]) => {
                 console.log(geometry)
                   return (
                     <Text key={user}>
                       {user} + {(geometry.area * 1000000).toFixed(2)}
                     </Text>
                   );
-                })}
+                })} */}
               </Text>
             </ScrollView>
           </SafeAreaView>
