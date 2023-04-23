@@ -21,7 +21,7 @@ import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { StatusBar } from "expo-status-bar";
 import { useNavigation } from "@react-navigation/native";
 
-export default function SettingsScreen() {
+export default function EditProfile() {
   const currentUser = auth().currentUser;
 
   const styles = StyleSheet.create({
