@@ -64,14 +64,20 @@ export default function Leaderboard() {
   }, []);
 
   useEffect(() => {
-    fetch("http://172.190.74.123:8000/get_group_geom/" + GROUP).then(
-      (response) => {
-        response.json().then((data) => {
-          //   iterate through every object in data
-          setGeostate(data);
+    const interval = setInterval(() => {
+      fetch("http://172.190.74.123:8000/get_group_geom/" + GROUP)
+        .then((response) => {
+          response.json().then((data) => {
+            //   iterate through every object in data
+            setGeostate(data);
+          });
+        })
+        .catch((error) => {
+          console.error(error);
         });
-      }
-    );
+    }, 15000);
+  
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
