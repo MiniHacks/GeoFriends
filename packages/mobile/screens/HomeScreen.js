@@ -83,34 +83,6 @@ export default function HomeScreen() {
     });
   }, []);
 
-  // Function to get permission for location
-  const requestLocationPermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: "Geolocation Permission",
-          message: "Can we access your location?",
-          buttonNeutral: "Ask Me Later",
-          buttonNegative: "Cancel",
-          buttonPositive: "OK",
-        }
-      );
-      console.log("granted", granted);
-      if (granted === "granted") {
-        console.log("You can use Geolocation");
-        return true;
-      } else {
-        console.log("You cannot use Geolocation");
-        return false;
-      }
-    } catch (err) {
-      return false;
-    }
-  };
-
-  requestLocationPermission();
-
   // Handle user state changes
   function onAuthStateChanged(user) {
     setUser(user);
@@ -122,51 +94,6 @@ export default function HomeScreen() {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber; // unsubscribe on unmount
   }, []);
-  const apiUrl = "http://172.190.74.123:8000";
-  const groupid = "welsar-friends";
-
-  console.log("At use effect");
-
-  useEffect(() => {
-    console.log("User:");
-    console.log(user);
-
-    if (user) {
-      console.log("Hi");
-
-      const getTokenAndPingLocation = async () => {
-        try {
-          const token = await user.getIdToken();
-          console.log(token);
-
-          if (!location) return;
-
-          const pingData = {
-            userid: user.uid,
-            groupid: groupid,
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-          };
-
-          const response = await fetch(`${apiUrl}/ping_location`, {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(pingData),
-          });
-          // console.log(response)
-          const responseData = await response.json();
-          console.log(responseData);
-        } catch (error) {
-          console.log(error);
-        }
-      };
-
-      getTokenAndPingLocation();
-    }
-  }, [user, location]);
 
   if (initializing) return null;
 
