@@ -1821,13 +1821,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@canvas/image-data@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@canvas/image-data@npm:1.0.0"
-  checksum: 371d7342190b06c4528d900abbe84e19704ee23c8d6a48927ce10a65e2958a3161e1d08104d10acaf39072799a8a2815ec3403940901cdb3561baa8b4a238e99
-  languageName: node
-  linkType: hard
-
 "@chakra-ui/accordion@npm:2.0.12":
   version: 2.0.12
   resolution: "@chakra-ui/accordion@npm:2.0.12"
@@ -3750,25 +3743,6 @@ __metadata:
   bin:
     excpretty: build/cli.js
   checksum: 075b09567a742eb1a5730f0a191f66e15f0606864d65734bf0b51b8598fb6e5bd1aabaf4e4257b209b8c0ffbb46cb17b66cdca29d678c95c73eb0e5e4aeca538
-  languageName: node
-  linkType: hard
-
-"@flyskywhy/react-native-browser-polyfill@npm:1.0.10":
-  version: 1.0.10
-  resolution: "@flyskywhy/react-native-browser-polyfill@npm:1.0.10"
-  dependencies:
-    "@canvas/image-data": ^1.0.0
-    atob: 2.1.2
-    btoa: 1.2.1
-    buffer: ^5.6.0
-    fbjs: ^1.0.0
-    text-encoding: ^0.7.0
-    xmldom-qsa: ^1.0.3
-  peerDependencies:
-    "@flyskywhy/react-native-gcanvas": ^2.3.0
-    react: ^16.8.6
-    react-native: "*"
-  checksum: 23b972f509c60fcb68119b28e2b48e8263684d71ba3b50895bd7bb481fa1f89a47451230b56a9b5112ca7398949c4ed7fb441e596cac2af5ab12073ec1559e00
   languageName: node
   linkType: hard
 
@@ -6987,7 +6961,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"atob@npm:2.1.2, atob@npm:^2.1.2":
+"atob@npm:^2.1.2":
   version: 2.1.2
   resolution: "atob@npm:2.1.2"
   bin:
@@ -7357,15 +7331,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"btoa@npm:1.2.1":
-  version: 1.2.1
-  resolution: "btoa@npm:1.2.1"
-  bin:
-    btoa: bin/btoa.js
-  checksum: afbf004fb1b1d530e053ffa66ef5bd3878b101c59d808ac947fcff96810b4452abba2b54be687adadea2ba9efc7af48b04228742789bf824ef93f103767e690c
-  languageName: node
-  linkType: hard
-
 "buffer-alloc-unsafe@npm:^1.1.0":
   version: 1.1.0
   resolution: "buffer-alloc-unsafe@npm:1.1.0"
@@ -7397,7 +7362,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"buffer@npm:^5.5.0, buffer@npm:^5.6.0":
+"buffer@npm:^5.5.0":
   version: 5.7.1
   resolution: "buffer@npm:5.7.1"
   dependencies:
@@ -8133,13 +8098,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-js@npm:^2.4.1":
-  version: 2.6.12
-  resolution: "core-js@npm:2.6.12"
-  checksum: 44fa9934a85f8c78d61e0c8b7b22436330471ffe59ec5076fe7f324d6e8cf7f824b14b1c81ca73608b13bdb0fef035bd820989bf059767ad6fa13123bb8bd016
-  languageName: node
-  linkType: hard
-
 "core-util-is@npm:~1.0.0":
   version: 1.0.3
   resolution: "core-util-is@npm:1.0.3"
@@ -8642,7 +8600,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"encoding@npm:^0.1.11, encoding@npm:^0.1.13":
+"encoding@npm:^0.1.13":
   version: 0.1.13
   resolution: "encoding@npm:0.1.13"
   dependencies:
@@ -9836,22 +9794,6 @@ __metadata:
   version: 1.0.2
   resolution: "fbjs-css-vars@npm:1.0.2"
   checksum: 72baf6d22c45b75109118b4daecb6c8016d4c83c8c0f23f683f22e9d7c21f32fff6201d288df46eb561e3c7d4bb4489b8ad140b7f56444c453ba407e8bd28511
-  languageName: node
-  linkType: hard
-
-"fbjs@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "fbjs@npm:1.0.0"
-  dependencies:
-    core-js: ^2.4.1
-    fbjs-css-vars: ^1.0.0
-    isomorphic-fetch: ^2.1.1
-    loose-envify: ^1.0.0
-    object-assign: ^4.1.0
-    promise: ^7.1.1
-    setimmediate: ^1.0.5
-    ua-parser-js: ^0.7.18
-  checksum: e3a18508c303934aa1d3d891c13e127d071d8c5c557fa886d982fd71ebf6ac713cb7fa8cbd805b0c50fe1be80eea276125c8cc00d7d48460572738e0d71123ac
   languageName: node
   linkType: hard
 
@@ -11404,7 +11346,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-stream@npm:^1.0.1, is-stream@npm:^1.1.0":
+"is-stream@npm:^1.1.0":
   version: 1.1.0
   resolution: "is-stream@npm:1.1.0"
   checksum: 063c6bec9d5647aa6d42108d4c59723d2bd4ae42135a2d4db6eadbd49b7ea05b750fd69d279e5c7c45cf9da753ad2c00d8978be354d65aa9f6bb434969c6a2ae
@@ -11520,16 +11462,6 @@ __metadata:
   version: 3.0.1
   resolution: "isobject@npm:3.0.1"
   checksum: db85c4c970ce30693676487cca0e61da2ca34e8d4967c2e1309143ff910c207133a969f9e4ddb2dc6aba670aabce4e0e307146c310350b298e74a31f7d464703
-  languageName: node
-  linkType: hard
-
-"isomorphic-fetch@npm:^2.1.1":
-  version: 2.2.1
-  resolution: "isomorphic-fetch@npm:2.2.1"
-  dependencies:
-    node-fetch: ^1.0.1
-    whatwg-fetch: ">=0.10.0"
-  checksum: bb5daa7c3785d6742f4379a81e55b549a469503f7c9bf9411b48592e86632cf5e8fe8ea878dba185c0f33eb7c510c23abdeb55aebfdf5d3c70f031ced68c5424
   languageName: node
   linkType: hard
 
@@ -12790,13 +12722,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mime-db@npm:~1.37.0":
-  version: 1.37.0
-  resolution: "mime-db@npm:1.37.0"
-  checksum: d2753b8c56a5ac3cff8ec4e6b4e07b230d4c3713961f47a3d14c525389c147e5896612dddde12156db511baf307f1272f4f01bcc43c325d10c5a25711392f01c
-  languageName: node
-  linkType: hard
-
 "mime-types@npm:^2.1.12, mime-types@npm:^2.1.27, mime-types@npm:~2.1.24, mime-types@npm:~2.1.34":
   version: 2.1.35
   resolution: "mime-types@npm:2.1.35"
@@ -13024,13 +12949,11 @@ __metadata:
     "@supersami/rn-foreground-service": ^2.1.0
     expo: ~48.0.11
     expo-camera: ^13.2.1
-    expo-file-system: ~15.2.2
     expo-splash-screen: ~0.18.1
     expo-status-bar: ^1.4.4
     react: 18.2.0
     react-native: 0.71.6
     react-native-color-picker: ^0.6.0
-    react-native-filereader: ^1.0.6
     react-native-geolocation-service: ^5.3.1
     react-native-gesture-handler: ^2.9.0
     react-native-linear-gradient: ^2.6.2
@@ -13337,16 +13260,6 @@ __metadata:
     encoding:
       optional: true
   checksum: 8d816ffd1ee22cab8301c7756ef04f3437f18dace86a1dae22cf81db8ef29c0bf6655f3215cb0cdb22b420b6fe141e64b26905e7f33f9377a7fa59135ea3e10b
-  languageName: node
-  linkType: hard
-
-"node-fetch@npm:^1.0.1":
-  version: 1.7.3
-  resolution: "node-fetch@npm:1.7.3"
-  dependencies:
-    encoding: ^0.1.11
-    is-stream: ^1.0.1
-  checksum: 3bb0528c05d541316ebe52770d71ee25a6dce334df4231fd55df41a644143e07f068637488c18a5b0c43f05041dbd3346752f9e19b50df50569a802484544d5b
   languageName: node
   linkType: hard
 
@@ -14511,19 +14424,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-filereader@npm:^1.0.6":
-  version: 1.0.6
-  resolution: "react-native-filereader@npm:1.0.6"
-  dependencies:
-    "@flyskywhy/react-native-browser-polyfill": 1.0.10
-    react-native-mime-types: 2.3.0
-  peerDependencies:
-    react-native: "*"
-    react-native-blob-util: "*"
-  checksum: 03ec77c85cd67fe3a12a5663d15848a4fdf2c96b5caa2f5c75d01f426cd581a117229370cf0616eb97e3f6ab06e5c5c59c9c2c0471d5b347b3bc58088c7ecac0
-  languageName: node
-  linkType: hard
-
 "react-native-geolocation-service@npm:^5.3.1":
   version: 5.3.1
   resolution: "react-native-geolocation-service@npm:5.3.1"
@@ -14577,15 +14477,6 @@ __metadata:
     react-native-web:
       optional: true
   checksum: 30c2f39ee3bb436a27a8c5534f73650588668c09c53f8fa4f0044ad3e766a32e3401610064a3e18fc893ce0ba802ce05ea1e075ba724574b128363bb3d6b56ca
-  languageName: node
-  linkType: hard
-
-"react-native-mime-types@npm:2.3.0":
-  version: 2.3.0
-  resolution: "react-native-mime-types@npm:2.3.0"
-  dependencies:
-    mime-db: ~1.37.0
-  checksum: a03b9a24ee6aefb5f8e621462ee3b98788f80bb59597229fe5b000843c297cd04c554690b454887a39424b795e31077c8e897a36204255d9e94a3700553f21ab
   languageName: node
   linkType: hard
 
@@ -16247,13 +16138,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"text-encoding@npm:^0.7.0":
-  version: 0.7.0
-  resolution: "text-encoding@npm:0.7.0"
-  checksum: b6109a843fb1b8748b32e1ecd6df74d370f46c13ac136bcb6ca15db70209bb0b8ec1f296ebb4b0dd9961150e205dcc044b89f8cf7657f6faef78c7569a2a81bc
-  languageName: node
-  linkType: hard
-
 "text-extensions@npm:^1.0.0":
   version: 1.9.0
   resolution: "text-extensions@npm:1.9.0"
@@ -16667,13 +16551,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ua-parser-js@npm:^0.7.18":
-  version: 0.7.35
-  resolution: "ua-parser-js@npm:0.7.35"
-  checksum: 0a332e8d72d277e62f29ecb3a33843b274de93eb9378350b746ea0f89ef05ee09c94f2c1fdab8001373ad5e95a48beb0a94f39dc1670c908db9fc9b8f0876204
-  languageName: node
-  linkType: hard
-
 "ua-parser-js@npm:^0.7.30":
   version: 0.7.33
   resolution: "ua-parser-js@npm:0.7.33"
@@ -17070,7 +16947,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"whatwg-fetch@npm:>=0.10.0, whatwg-fetch@npm:^3.0.0":
+"whatwg-fetch@npm:^3.0.0":
   version: 3.6.2
   resolution: "whatwg-fetch@npm:3.6.2"
   checksum: ee976b7249e7791edb0d0a62cd806b29006ad7ec3a3d89145921ad8c00a3a67e4be8f3fb3ec6bc7b58498724fd568d11aeeeea1f7827e7e1e5eae6c8a275afed
@@ -17302,13 +17179,6 @@ __metadata:
   version: 11.0.1
   resolution: "xmlbuilder@npm:11.0.1"
   checksum: 7152695e16f1a9976658215abab27e55d08b1b97bca901d58b048d2b6e106b5af31efccbdecf9b07af37c8377d8e7e821b494af10b3a68b0ff4ae60331b415b0
-  languageName: node
-  linkType: hard
-
-"xmldom-qsa@npm:^1.0.3":
-  version: 1.1.2
-  resolution: "xmldom-qsa@npm:1.1.2"
-  checksum: 05f177fb886b97d4cdc6422592c6320ee76e1f7cb045ccecbe8ebc5065a1f51f22e4573a9bfdf673bb1714f5b48e530a2cb170a1b6f1a9ae43b5a211156312dc
   languageName: node
   linkType: hard
 
