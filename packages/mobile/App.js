@@ -22,7 +22,6 @@ function MyTabs() {
     const interval = setInterval(() => {
       Geolocation.getCurrentPosition(
         (position) => {
-          console.log(position);
           setLocation(position);
         },
         (error) => {
@@ -102,7 +101,6 @@ function MyTabs() {
       const getTokenAndPingLocation = async () => {
         try {
           const token = await user.getIdToken();
-          console.log(token);
 
           if (!location) return;
 
@@ -121,7 +119,6 @@ function MyTabs() {
             },
             body: JSON.stringify(pingData),
           });
-          console.log(response);
           const responseData = await response.json();
           console.log(responseData);
         } catch (error) {
