@@ -92,7 +92,6 @@ export default function Leaderboard() {
     });
   }, []);
 
-  if (!isEnabled) {
     return (
       <View
         style={{
@@ -102,161 +101,64 @@ export default function Leaderboard() {
         }}
       >
         <Overlay />
-        <View style={styles.container}>
-          <Switch
-            trackColor={{ false: "#74868B", true: "#49575B" }}
-            thumbColor={isEnabled ? "#022A38" : "#A6BBC0"}
-            onValueChange={toggleSwitch}
-            value={isEnabled}
-            style={{ transform: [{ scaleX: 1.6 }, { scaleY: 1.5 }] }}
-          />
-        </View>
-        <View
-          style={{
-            bottom: 0,
-            position: "absolute",
-            width: 360,
-            height: 100,
-            backgroundColor: "rgba(233, 238, 240, 0.9)",
-            borderTopLeftRadius: 20,
-            borderTopRightRadius: 20,
-            alignItems: "center",
-            borderColor: "rgba(100,100,100,0.5)",
-            borderWidth: 2,
-          }}
-        >
-          <SafeAreaView style={styles1.container}>
-            <ScrollView
-              horizontal={true}
-              contentContainerStyle={styles2.contentContainer}
-            >
-              <View
-                style={{
-                  margin: 20,
-                  height: 50,
-                  flex: 1,
-                  flexDirection: "row",
-                }}
-              >
-                {users.length == 0 ? (
-                  <Text>Loading...</Text>
-                ) : (
-                  users
-                    .filter((e) => e.photoURL)
-                    .map((user) => {
-                      return (
-                        <Image
-                          key={user.id}
-                          source={{
-                            uri: user.photoURL,
-                            referrerPolicy: "no-referrer",
-                          }}
-                          style={{
-                            width: 50,
-                            height: 50,
-                            borderRadius: 50,
-                            marginHorizontal: 10,
-                            borderColor: user.color ? user.color : "black",
-                            borderWidth: 3,
-                          }}
-                        />
-                      );
-                    })
-                )}
-              </View>
-            </ScrollView>
-          </SafeAreaView>
-        </View>
-        <Text
-          style={{
-            position: "absolute",
-            bottom: 70,
-            fontFamily: "Raleway",
-            fontSize: 20,
-            color: "black",
-            marginTop: 5,
-          }}
-        >
-          Who was here?
-        </Text>
-      </View>
-    );
-  } else {
-    return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Overlay />
-        <View style={styles.container}>
-          <Switch
-            trackColor={{ false: "#74868B", true: "#49575B" }}
-            thumbColor={isEnabled ? "#022A38" : "#A6BBC0"}
-            onValueChange={toggleSwitch}
-            value={isEnabled}
-            style={{ transform: [{ scaleX: 1.6 }, { scaleY: 1.5 }] }}
-          />
-        </View>
-        <View
-          style={{
-            bottom: 0,
-            position: "absolute",
-            width: 360,
-            height: 100,
-            backgroundColor: "rgba(233, 238, 240, 0.9)",
-            borderTopLeftRadius: 20,
-            borderTopRightRadius: 20,
-            alignItems: "center",
-            borderColor: "rgba(100,100,100,0.5)",
-            borderWidth: 2,
-          }}
-        >
-          <SafeAreaView style={styles1.container}>
-            <ScrollView
-              horizontal={true}
-              contentContainerStyle={styles2.contentContainer}
-            >
-              <View
-                style={{
-                  margin: 20,
-                  height: 50,
-                  flex: 1,
-                  flexDirection: "row",
-                }}
-              >
-                {users.length == 0 ? (
-                  <Text>Loading...</Text>
-                ) : (
-                  users
-                    .filter((e) => e.photoURL)
-                    .map((user) => {
-                      return (
-                        <Image
-                          key={user.id}
-                          source={{
-                            uri: user.photoURL,
-                            referrerPolicy: "no-referrer",
-                          }}
-                          style={{
-                            width: 50,
-                            height: 50,
-                            borderRadius: 50,
-                            marginHorizontal: 10,
-                            borderColor: user.color ? user.color : "black",
-                            borderWidth: 3,
-                          }}
-                        />
-                      );
-                    })
-                )}
-              </View>
-            </ScrollView>
-          </SafeAreaView>
-        </View>
 
+        <View
+          style={{
+            bottom: 0,
+            position: "absolute",
+            width: 360,
+            height: 100,
+            backgroundColor: "rgba(233, 238, 240, 0.9)",
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+            alignItems: "center",
+            borderColor: "rgba(100,100,100,0.5)",
+            borderWidth: 2,
+          }}
+        >
+          <SafeAreaView style={styles1.container}>
+            <ScrollView
+              horizontal={true}
+              contentContainerStyle={styles2.contentContainer}
+            >
+              <View
+                style={{
+                  margin: 20,
+                  height: 50,
+                  flex: 1,
+                  flexDirection: "row",
+                }}
+              >
+                {users.length == 0 ? (
+                  <Text>Loading...</Text>
+                ) : (
+                  users
+                    .filter((e) => e.photoURL)
+                    .map((user) => {
+                      return (
+                        <Image
+                          key={user.id}
+                          source={{
+                            uri: user.photoURL,
+                            referrerPolicy: "no-referrer",
+                          }}
+                          style={{
+                            width: 50,
+                            height: 50,
+                            borderRadius: 50,
+                            marginHorizontal: 10,
+                            borderColor: user.color ? user.color : "black",
+                            borderWidth: 3,
+                          }}
+                        />
+                      );
+                    })
+                )}
+              </View>
+            </ScrollView>
+          </SafeAreaView>
+        </View>
+        {isEnabled && (
         <View>
           <View
             style={{
@@ -340,7 +242,7 @@ export default function Leaderboard() {
               </View>
             </ScrollView>
           </SafeAreaView>
-        </View>
+        </View>)}
         <Text
           style={{
             position: "absolute",
@@ -353,7 +255,17 @@ export default function Leaderboard() {
         >
           Who was here?
         </Text>
+        <View style={styles.container}>
+          <Switch
+            trackColor={{ false: "#74868B", true: "#49575B" }}
+            thumbColor={isEnabled ? "#022A38" : "#A6BBC0"}
+            onValueChange={toggleSwitch}
+            value={isEnabled}
+            style={{ transform: [{ scaleX: 1.6 }, { scaleY: 1.5 }] }}
+          />
+        </View>
+
       </View>
     );
-  }
+
 }
