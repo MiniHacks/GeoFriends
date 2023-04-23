@@ -14,6 +14,8 @@ import { StatusBar } from "expo-status-bar";
 
 export default function Leaderboard() {
   const [isEnabled, setIsEnabled] = useState(true);
+  const GROUP = "welsar-friends";
+  const [geostate, setGeostate] = useState([]);
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
   const styles = StyleSheet.create({
     container: {
@@ -45,6 +47,15 @@ export default function Leaderboard() {
       alignContent: "center",
     },
   });
+
+  useEffect(() => {
+    fetch("http://172.190.74.123:8000/get_group_geom/" + GROUP).then((response) => {
+      response.json().then((data) => {
+        //   iterate through every object in data
+        setGeostate(data);
+      });
+    });
+  }, []);
 
   if (!isEnabled) {
     return (
@@ -196,8 +207,14 @@ export default function Leaderboard() {
                   top: 100,
                 }}
               >
-                LEADERBOARD: {"\n"}
-                1. Katya {"\n"}2. Julia{"\n"}3. Jack{"\n"}4. Daniel
+              {geostate && Object.entries(geostate).map(([user, geometry]) => {
+                console.log(geometry)
+                  return (
+                    <Text>
+                      {user} + {(geometry.area * 1000000).toFixed(2)}
+                    </Text>
+                  );
+                })}
               </Text>
             </ScrollView>
           </SafeAreaView>
