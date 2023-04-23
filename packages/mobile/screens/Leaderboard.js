@@ -7,10 +7,13 @@ import {
   Switch,
   Text,
   View,
+  Image
 } from "react-native";
 import Overlay from "../components/Overlay";
 import LinearGradient from "react-native-linear-gradient";
-import { firebase } from "@react-native-firebase/auth";
+import { firebase } from '@react-native-firebase/app';
+import { firestore } from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 import { StatusBar } from "expo-status-bar";
 
 export default function Leaderboard() {
@@ -48,6 +51,19 @@ export default function Leaderboard() {
       alignContent: "center",
     },
   });
+
+
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    const db = firebase.firestore();
+    return db.collection('users').onSnapshot((snapshot) => {
+      const postData = [];
+      snapshot.forEach((doc) => postData.push({ ...doc.data(), id: doc.id }));
+      console.log(postData); 
+      setUsers(postData);
+    });
+  }, []);
 
   useEffect(() => {
     fetch("http://172.190.74.123:8000/get_group_geom/" + GROUP).then((response) => {
@@ -96,10 +112,16 @@ export default function Leaderboard() {
               horizontal={true}
               contentContainerStyle={styles2.contentContainer}
             >
-              <Text style={{ margin: 30, height: 50 }}>
-                many many many many manyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy profile
-                pictures once daniel figures it out! yay!
-              </Text>
+              <View style={{ margin: 30, height: 50, flex: 1, flexDirection: 'row'}}>
+                { users.length == 0 ? <Text>Loading...</Text> : users.filter(e => e.photoURL).map((user) => {
+                  return (
+                    <Image
+                      source={{ uri: user.photoURL, referrerPolicy: 'no-referrer' }}
+                      style={{ width: 50, height: 50, borderRadius: 50, marginHorizontal: 10, borderColor: user.color ? user.color : 'black', borderWidth: 2 }}
+                    />
+                  );
+                }) }
+              </View>
             </ScrollView>
           </SafeAreaView>
         </View>
@@ -155,10 +177,16 @@ export default function Leaderboard() {
               horizontal={true}
               contentContainerStyle={styles2.contentContainer}
             >
-              <Text style={{ margin: 30, height: 50 }}>
-                many many many many manyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy profile
-                pictures once daniel figures it out! yay!
-              </Text>
+              <View style={{ margin: 30, height: 50 }}>
+                { users.length == 0 ? <Text>Loading...</Text> : users.filter(e => e.photoURL).map((user) => {
+                  return (
+                    <Image
+                      source={{ uri: user.photoURL }}
+                      style={{ width: 50, height: 50, borderRadius: 50 }}
+                    />
+                  );
+                }) }
+              </View>
             </ScrollView>
           </SafeAreaView>
         </View>
