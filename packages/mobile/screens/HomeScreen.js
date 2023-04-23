@@ -50,7 +50,7 @@ export default function HomeScreen() {
       {
         /*switch screens to leaderboard.js */
       }
-      navigation.navigate("Onboarding");
+      //navigation.navigate("Onboarding");
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow

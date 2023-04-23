@@ -192,14 +192,14 @@ export default function Leaderboard() {
                   top: 100,
                 }}
               >
-              {geostate && Object.entries(geostate).map(([user, geometry]) => {
+              {/* {geostate && Object.entries(geostate).map(([user, geometry]) => {
                 console.log(geometry)
                   return (
                     <Text key={user}>
                       {user} + {(geometry.area * 1000000).toFixed(2)}
                     </Text>
                   );
-                })}
+                })} */}
               </Text>
             </ScrollView>
           </SafeAreaView>

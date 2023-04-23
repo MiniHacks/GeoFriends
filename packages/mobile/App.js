@@ -15,7 +15,7 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 
 const Tab = createMaterialTopTabNavigator();
 
-function MyTabs() {
+export default function App() {
   const [user, setUser] = useState(null);
   const [initializing, setInitializing] = useState(true);
   const [location, setLocation] = useState(false);
@@ -133,59 +133,6 @@ function MyTabs() {
   if (initializing) return null;
 
   return (
-    <Tab.Navigator
-      initialRouteName="Sign In"
-      screenOptions={{
-        tabBarActiveTintColor: "#e91e63",
-        headerShown: false,
-      }}
-    >
-      <Tab.Screen
-        name="HomeScreen"
-        component={HomeScreen}
-        options={{
-          tabBarLabel: "HomeScreen",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="home" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Leaderboard"
-        component={Leaderboard}
-        options={{
-          tabBarLabel: "Leaderboard",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="home" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Onboarding"
-        component={Onboarding}
-        options={{
-          tabBarLabel: "Onboarding",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="bell" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="ExpoCamera"
-        component={ExpoCamera}
-        options={{
-          tabBarLabel: "ExpoCamera",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="bell" color={color} size={size} />
-          ),
-        }}
-      />
-    </Tab.Navigator>
-  );
-}
-
-export default function App() {
-  return (
     //Fix the navigation container so you can swipe between screens
 
     <NavigationContainer>
@@ -201,10 +148,12 @@ export default function App() {
           style: { backgroundColor: "transparent",   display: "none" },
         }}
       >
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Onboarding" component={Onboarding} />
-        <Tab.Screen name="Leaderboard" component={Leaderboard} />
-        <Tab.Screen name="ExpoCamera" component={ExpoCamera} />
+        { !user ? <Tab.Screen name="Home" component={HomeScreen} /> :
+        <>
+          <Tab.Screen name="Onboarding" component={Onboarding} />
+          <Tab.Screen name="Leaderboard" component={Leaderboard} />
+          <Tab.Screen name="ExpoCamera" component={ExpoCamera} />
+        </> }
       </Tab.Navigator>
     </NavigationContainer>
   );
