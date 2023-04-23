@@ -4,7 +4,7 @@ import { StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
-import SettingsScreen from "./screens/SettingsScreen";
+import Onboarding from "./screens/Onboarding";
 import HomeScreen from "./screens/HomeScreen";
 import Leaderboard from "./screens/Leaderboard";
 import auth from "@react-native-firebase/auth";
@@ -77,7 +77,6 @@ function MyTabs() {
     //   //do your thing!
     // }
   };
-  
 
   requestLocationPermission();
 
@@ -97,7 +96,6 @@ function MyTabs() {
 
   useEffect(() => {
     if (user) {
-
       const getTokenAndPingLocation = async () => {
         try {
           const token = await user.getIdToken();
@@ -161,10 +159,10 @@ function MyTabs() {
         }}
       />
       <Tab.Screen
-        name="Settings"
-        component={SettingsScreen}
+        name="Onboarding"
+        component={Onboarding}
         options={{
-          tabBarLabel: "Settings",
+          tabBarLabel: "Onboarding",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="bell" color={color} size={size} />
           ),

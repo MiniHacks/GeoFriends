@@ -17,7 +17,7 @@ import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
-export default function SettingsScreen() {
+export default function Onboarding() {
   const colors = [
     { color: "red", hex: "#CC2936" },
     { color: "orange", hex: "#EE5622" },
