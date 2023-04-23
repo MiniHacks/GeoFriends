@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
-import SettingsScreen from "./screens/SettingsScreen";
+import Onboarding from "./screens/Onboarding";
 import HomeScreen from "./screens/HomeScreen";
 import Leaderboard from "./screens/Leaderboard";
 import auth from "@react-native-firebase/auth";
@@ -24,7 +24,6 @@ function MyTabs() {
     const interval = setInterval(() => {
       Geolocation.getCurrentPosition(
         (position) => {
-          console.log(position);
           setLocation(position);
         },
         (error) => {
@@ -102,7 +101,6 @@ function MyTabs() {
       const getTokenAndPingLocation = async () => {
         try {
           const token = await user.getIdToken();
-          console.log(token);
 
           if (!location) return;
 
@@ -121,7 +119,6 @@ function MyTabs() {
             },
             body: JSON.stringify(pingData),
           });
-          console.log(response);
           const responseData = await response.json();
           console.log(responseData);
         } catch (error) {
@@ -164,10 +161,10 @@ function MyTabs() {
         }}
       />
       <Tab.Screen
-        name="Settings"
-        component={SettingsScreen}
+        name="Onboarding"
+        component={Onboarding}
         options={{
-          tabBarLabel: "Settings",
+          tabBarLabel: "Onboarding",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="bell" color={color} size={size} />
           ),

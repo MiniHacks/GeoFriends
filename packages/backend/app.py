@@ -67,7 +67,7 @@ async def ping_location(location: PingLocationRequest, user_id = Depends(get_use
     if location.userid != user_id["uid"]:
         raise HTTPException(status_code=401, detail='Invalid authorization token. Userid does not match.')
     conn = get_conn()
-    db.update_geom(conn, location.latitude, location.longitude, location.userid, location.groupid)
+    db.update_geom(conn, location.latitude, location.longitude, location.userid, location.groupid, location.radius)
     conn.close()
     return {"message": "Location updated successfully"}
 

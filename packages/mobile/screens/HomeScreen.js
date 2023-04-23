@@ -50,7 +50,7 @@ export default function HomeScreen() {
       {
         /*switch screens to leaderboard.js */
       }
-      navigation.navigate("Leaderboard");
+      navigation.navigate("Onboarding");
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
@@ -200,7 +200,6 @@ export default function HomeScreen() {
           </View>
 
           {/* Add logged in status and log out button */}
-          <View>{!loggedIn && <Text>You are currently logged out</Text>}</View>
         </View>
       </ImageBackground>
     </View>
