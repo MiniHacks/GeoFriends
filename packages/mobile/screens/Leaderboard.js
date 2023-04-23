@@ -1,81 +1,220 @@
-import React from "react";
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  ImageBackground,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Switch,
+  Text,
+  View,
+} from "react-native";
 import LinearGradient from "react-native-linear-gradient";
-import { Image, ImageBackground, FlatList, TextInput } from "react-native";
-import Overlay from "../components/Overlay";
-const leaderboard_styles = StyleSheet.create({
-  container: {
-    position: "absolute",
-    top: 85,
-    width: 228,
-    height: 300,
-    backgroundColor: "rgba(234, 240, 241, 0.8)",
-    shadowColor: "#000000",
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    shadowOffset: { width: 0, height: 4 },
-    overflow: "hidden",
-    borderRadius: 15,
-  },
-  gradient: {
-    flex: 1,
-    backgroundColor: "transparent",
-    justifyContent: "center",
-  },
-});
+import { firebase } from "@react-native-firebase/auth";
+import { StatusBar } from "expo-status-bar";
 
-const title_styles = StyleSheet.create({
-  rectangle: {
-    position: "absolute",
-    width: 228,
-    height: 35,
-    top: 85,
-    backgroundColor: "#EAF0F1",
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15,
-  },
-});
 export default function Leaderboard() {
+  const [isEnabled, setIsEnabled] = useState(true);
+  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+      position: "absolute",
+      top: 70,
+      left: 50,
+    },
+  });
 
-  // const GROUP = "welsar-friends";
-  //
-  // fetch("http://172.190.74.123:8000/get_group_geom/" + GROUP).then((response) => {
-  //   response.json().then((data) => {
-  //     console.log(data);
-  //   });
-  // });
+  const styles1 = StyleSheet.create({
+    scrollView: {
+      marginHorizontal: 20,
+      alignItems: "center",
+      alignContent: "center",
+    },
+  });
+  const styles2 = StyleSheet.create({
+    contentContainer: {
+      paddingVertical: 20,
+    },
+  });
+  const styles3 = StyleSheet.create({
+    contentContainer: {
+      paddingVertical: 20,
+      alignItems: "center",
+      alignContent: "center",
+    },
+  });
 
-  return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Overlay />
-      <View style={leaderboard_styles.container}>
-        <LinearGradient
-          colors={["rgba(260, 260, 260, 0.9)", "rgba(233, 238, 240, 0.3)"]}
-          locations={[0, 1]}
-          style={leaderboard_styles.gradient}
+  if (!isEnabled) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <ImageBackground
+          source={require("../assets/UCLASampleMap.png")}
+          style={{
+            flex: 1,
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+          }}
         />
-      </View>
-      <View style={title_styles.rectangle}>
+        <View style={styles.container}>
+          <Switch
+            trackColor={{ false: "#74868B", true: "#49575B" }}
+            thumbColor={isEnabled ? "#022A38" : "#A6BBC0"}
+            onValueChange={toggleSwitch}
+            value={isEnabled}
+            style={{ transform: [{ scaleX: 1.6 }, { scaleY: 1.5 }] }}
+          />
+        </View>
+        <View
+          style={{
+            bottom: 0,
+            position: "absolute",
+            width: 360,
+            height: 120,
+            backgroundColor: "rgba(233, 238, 240, 0.9)",
+            borderTopLeftRadius: 30,
+            borderTopRightRadius: 30,
+            alignItems: "center",
+            borderColor: "rgba(100,100,100,0.5)",
+            borderWidth: 2,
+          }}
+        >
+          <SafeAreaView style={styles1.container}>
+            <ScrollView
+              horizontal={true}
+              contentContainerStyle={styles2.contentContainer}
+            >
+              <Text style={{ margin: 30, height: 50 }}>
+                many many many many manyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy profile
+                pictures once daniel figures it out! yay!
+              </Text>
+            </ScrollView>
+          </SafeAreaView>
+        </View>
         <Text
           style={{
             position: "absolute",
+            bottom: 70,
             fontFamily: "Raleway",
-            fontSize: 15,
+            fontSize: 25,
             color: "black",
             marginTop: 10,
           }}
         >
-          LEADERBOARD
+          Who was here?
         </Text>
       </View>
-      <Text>Settings</Text>
-    </View>
+    );
+  } else {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <ImageBackground
+          source={require("../assets/UCLASampleMap.png")}
+          style={{
+            flex: 1,
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+          }}
+        />
+        <View style={styles.container}>
+          <Switch
+            trackColor={{ false: "#74868B", true: "#49575B" }}
+            thumbColor={isEnabled ? "#022A38" : "#A6BBC0"}
+            onValueChange={toggleSwitch}
+            value={isEnabled}
+            style={{ transform: [{ scaleX: 1.6 }, { scaleY: 1.5 }] }}
+          />
+        </View>
+        <View
+          style={{
+            bottom: 0,
+            position: "absolute",
+            width: 360,
+            height: 120,
+            backgroundColor: "rgba(233, 238, 240, 0.9)",
+            borderTopLeftRadius: 30,
+            borderTopRightRadius: 30,
+            alignItems: "center",
+            borderColor: "rgba(100,100,100,0.5)",
+            borderWidth: 2,
+          }}
+        >
+          <SafeAreaView style={styles1.container}>
+            <ScrollView
+              horizontal={true}
+              contentContainerStyle={styles2.contentContainer}
+            >
+              <Text style={{ margin: 30, height: 50 }}>
+                many many many many manyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy profile
+                pictures once daniel figures it out! yay!
+              </Text>
+            </ScrollView>
+          </SafeAreaView>
+        </View>
 
-  );
+        <View>
+          <View
+            style={{
+              position: "absolute",
+              width: 230,
+              height: 350,
+              alignSelf: "center",
+              bottom: 190,
+              backgroundColor: "rgba(233, 238, 240, 0.9)",
+              borderTopLeftRadius: 20,
+              borderTopRightRadius: 20,
+              borderBottomLeftRadius: 20,
+              borderBottomRightRadius: 20,
+              borderColor: "rgba(100,100,100,0.5)",
+              borderWidth: 2,
+            }}
+          ></View>
+
+          <SafeAreaView style={styles1.container}>
+            <ScrollView contentContainerStyle={styles3.contentContainer}>
+              <Text
+                style={{
+                  height: 100,
+                  margin: 30,
+                  position: "relative",
+                  fontFamily: "Raleway",
+                  top: 100,
+                }}
+              >
+                LEADERBOARD: {"\n"}
+                1. Katya {"\n"}2. Julia{"\n"}3. Jack{"\n"}4. Daniel
+              </Text>
+            </ScrollView>
+          </SafeAreaView>
+        </View>
+        <Text
+          style={{
+            position: "absolute",
+            bottom: 70,
+            fontFamily: "Raleway",
+            fontSize: 25,
+            color: "black",
+            marginTop: 10,
+          }}
+        >
+          Who was here?
+        </Text>
+      </View>
+    );
+  }
 }

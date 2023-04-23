@@ -8,10 +8,10 @@ def init_db(conn):
         );
     """
     
-    with conn.cursor() as cur:
-        cur.execute(create_table_sql)
-        conn.commit()
-        cur.close()
+    cur = conn.cursor()
+    cur.execute(create_table_sql)
+    conn.commit()
+    cur.close()
         
 def update_geom(conn, lat, lon, userid, groupid):
     update_geom_sql = """
@@ -34,20 +34,23 @@ def update_geom(conn, lat, lon, userid, groupid):
         WHERE g.groupid = %s AND g.userid != %s;
     """
     
-    with conn.cursor() as cur:
-        cur.execute(update_geom_sql, (lat, lon, userid, groupid, userid, groupid, groupid, userid))
-        conn.commit()
-        cur.close()
+    cur = conn.cursor()
+    cur.execute(update_geom_sql, (lon, lat, userid, groupid, userid, groupid, groupid, userid))
+    conn.commit()
+    cur.close()
         
 def get_group_geom(conn, groupid):
     get_group_geom_sql = """
-        SELECT jsonb_object_agg(userid, ST_AsGeoJSON(geometry)::jsonb) AS geometries_by_user
+        SELECT jsonb_object_agg(userid, jsonb_build_object(
+            'geometry', ST_AsGeoJSON(geometry)::jsonb,
+            'area', ST_Area(geometry)
+        )) AS geometries_by_user
         FROM geometries
         WHERE groupid = %s;
     """
     
-    with conn.cursor() as cur:
-        cur.execute(get_group_geom_sql, (groupid,))
-        result = cur.fetchone()[0]
-        cur.close()
-        return result
+    cur = conn.cursor()
+    cur.execute(get_group_geom_sql, (groupid,))
+    result = cur.fetchone()[0]
+    cur.close()
+    return result
