@@ -266,16 +266,59 @@ export default function Leaderboard() {
                   fontFamily: "Raleway",
                   top: 175,
                   pointerEvents: "none",
+                  display: "flex",
+                  flexDirection: "column",
                 }}
               >
-              {geostate && Object.entries(geostate).map(([user, geometry]) => {
-                console.log("geostate of ", geometry)
-                const firebaseUser = users.find(e => e.id == user)
-                  return firebaseUser ? 
-                    <Text key={user}>
-                      {firebaseUser.displayName} {(geometry.area * 1000000).toFixed(2)}
-                    </Text> : <></>;
-                })}
+              {geostate &&
+                Object.entries(geostate)
+                  .sort(([, a], [, b]) => b.area - a.area) // Sort by geometry.area
+                  .map(([user, geometry]) => {
+                    console.log("geostate of ", geometry);
+                    const firebaseUser = users.find((e) => e.id == user);
+                    return firebaseUser ? (
+                      <View
+                        key={user}
+                        style={{
+                          padding: 10,
+                          margin: 5,
+                          backgroundColor: "#FFFFFF",
+                          borderRadius: 10,
+                          display: "flex",
+                          flexDirection: "row",
+                          width: "100%",
+                        }}
+                      >
+                        <Image
+                          key={firebaseUser.id}
+                          source={{
+                            uri: firebaseUser.photoURL,
+                            referrerPolicy: "no-referrer",
+                          }}
+                          style={{
+                            width: 30,
+                            height: 30,
+                            borderRadius: 30,
+                            marginHorizontal: 5,
+                            borderColor: firebaseUser.color ? firebaseUser.color : "black",
+                            borderWidth: 3,
+                          }}
+                        />
+                        <View
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            flexGrow: 1,
+                            alignItems: "center",
+                          }}
+                        >
+                          <Text>{firebaseUser.displayName}</Text>
+                          <Text>{(geometry.area * 10000).toFixed(2)}</Text>
+                        </View>
+                      </View>
+                    ) : <></>;
+                  })}
               </View>
             </ScrollView>
           </SafeAreaView>

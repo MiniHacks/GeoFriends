@@ -1,6 +1,9 @@
 import { registerRootComponent } from 'expo';
 import ReactNativeForegroundService from "@supersami/rn-foreground-service";
 ReactNativeForegroundService.register();
+import { LogBox } from "react-native"
+
+LogBox.ignoreAllLogs(true);
 
 
 import App from './App';
