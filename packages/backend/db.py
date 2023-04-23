@@ -46,7 +46,7 @@ def get_group_geom(conn, groupid):
             'area', ST_Area(geometry)
         )) AS geometries_by_user
         FROM geometries
-        WHERE groupid = %s;
+        WHERE groupid = %s AND NOT ST_IsEmpty(geometry);
     """
     
     cur = conn.cursor()
