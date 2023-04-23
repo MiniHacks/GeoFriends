@@ -8,13 +8,12 @@ import SettingsScreen from "./screens/SettingsScreen";
 import HomeScreen from "./screens/HomeScreen";
 import Leaderboard from "./screens/Leaderboard";
 import auth from "@react-native-firebase/auth";
-import Geolocation from 'react-native-geolocation-service';
+import Geolocation from "react-native-geolocation-service";
 import ExpoCamera from "./screens/ExpoCamera";
 
 const Tab = createBottomTabNavigator();
 
 function MyTabs() {
-
   const [user, setUser] = useState(null);
   const [initializing, setInitializing] = useState(true);
   const [location, setLocation] = useState(false);
@@ -22,16 +21,16 @@ function MyTabs() {
   useEffect(() => {
     const interval = setInterval(() => {
       Geolocation.getCurrentPosition(
-        position => {
+        (position) => {
           console.log(position);
           setLocation(position);
         },
-        error => {
+        (error) => {
           // See error code charts below.
           console.log(error.code, error.message);
           setLocation(null);
         },
-        { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
       );
     }, 5000);
 
@@ -46,18 +45,18 @@ function MyTabs() {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
         {
-          title: 'Geolocation Permission',
-          message: 'Can we access your location?',
-          buttonNeutral: 'Ask Me Later',
-          buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
-        },
+          title: "Geolocation Permission",
+          message: "Can we access your location?",
+          buttonNeutral: "Ask Me Later",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK",
+        }
       );
-      console.log('granted', granted);
-      if (granted === 'granted') {
-        console.log('You can use Geolocation');
+      console.log("granted", granted);
+      if (granted === "granted") {
+        console.log("You can use Geolocation");
       } else {
-        console.log('You cannot use Geolocation');
+        console.log("You cannot use Geolocation");
       }
     } catch (err) {
       return false;
@@ -105,8 +104,7 @@ function MyTabs() {
           const token = await user.getIdToken();
           console.log(token);
 
-          if (!location)
-            return;
+          if (!location) return;
 
           const pingData = {
             userid: user.uid,
@@ -123,6 +121,7 @@ function MyTabs() {
             },
             body: JSON.stringify(pingData),
           });
+          console.log(response);
           const responseData = await response.json();
           console.log(responseData);
         } catch (error) {
@@ -134,12 +133,11 @@ function MyTabs() {
     }
   }, [user, location]);
 
-
   if (initializing) return null;
 
   return (
     <Tab.Navigator
-      initialRouteName="Leaderboard"
+      initialRouteName="Sign In"
       screenOptions={{
         tabBarActiveTintColor: "#e91e63",
         headerShown: false,
