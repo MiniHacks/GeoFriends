@@ -12,7 +12,7 @@ import Geolocation from "react-native-geolocation-service";
 import ExpoCamera from "./screens/ExpoCamera";
 import EditProfile from "./screens/EditProfile";
 import Profile from "./screens/Profile";
-
+import Feed from "./screens/Feed";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
 const Tab = createMaterialTopTabNavigator();
@@ -136,52 +136,18 @@ function MyTabs() {
 
   return (
     <Tab.Navigator
-      initialRouteName="Sign In"
+      initialRouteName="HomeScreen"
       screenOptions={{
         tabBarActiveTintColor: "#e91e63",
         headerShown: false,
       }}
     >
-      <Tab.Screen
-        name="HomeScreen"
-        component={HomeScreen}
-        options={{
-          tabBarLabel: "HomeScreen",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="home" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Leaderboard"
-        component={Leaderboard}
-        options={{
-          tabBarLabel: "Leaderboard",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="home" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Onboarding"
-        component={Onboarding}
-        options={{
-          tabBarLabel: "Onboarding",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="bell" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Profile"
-        component={Profile}
-        options={{
-          tabBarLabel: "Profiles",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="bell" color={color} size={size} />
-          ),
-        }}
-      />
+      <Tab.Screen name="HomeScreen" component={HomeScreen} />
+      <Tab.Screen name="Leaderboard" component={Leaderboard} />
+      <Tab.Screen name="Feed" component={Feed} />
+      <Tab.Screen name="Profile" component={Profile} />
+      <Tab.Screen name="EditProfile" component={EditProfile} />
+      <Tab.Screen name="Onboarding" component={Onboarding} />
     </Tab.Navigator>
   );
 }
@@ -212,12 +178,8 @@ export default function App() {
             component={HomeScreen}
             options={{ swipeEnabled: false }}
           />
-
-          <Tab.Screen
-            name="Onboarding"
-            component={Onboarding}
-            options={{ swipeEnabled: false }}
-          />
+          <Tab.Screen name="Onboarding" component={Onboarding} />
+          <Tab.Screen name="Feed" component={Feed} />
           <Tab.Screen name="Leaderboard" component={Leaderboard} />
           <Tab.Screen name="Profile" component={Profile} />
           <Tab.Screen
