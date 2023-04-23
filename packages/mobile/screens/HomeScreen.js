@@ -25,7 +25,7 @@ import "../components/backgroundService";
 GoogleSignin.configure({
   webClientId: "",
 });
-import Geolocation from 'react-native-geolocation-service';
+import Geolocation from "react-native-geolocation-service";
 //const usersCollection = firestore().collection("users");
 
 export default function HomeScreen() {
@@ -89,19 +89,19 @@ export default function HomeScreen() {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
         {
-          title: 'Geolocation Permission',
-          message: 'Can we access your location?',
-          buttonNeutral: 'Ask Me Later',
-          buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
-        },
+          title: "Geolocation Permission",
+          message: "Can we access your location?",
+          buttonNeutral: "Ask Me Later",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK",
+        }
       );
-      console.log('granted', granted);
-      if (granted === 'granted') {
-        console.log('You can use Geolocation');
+      console.log("granted", granted);
+      if (granted === "granted") {
+        console.log("You can use Geolocation");
         return true;
       } else {
-        console.log('You cannot use Geolocation');
+        console.log("You cannot use Geolocation");
         return false;
       }
     } catch (err) {
@@ -139,8 +139,7 @@ export default function HomeScreen() {
           const token = await user.getIdToken();
           console.log(token);
 
-          if (!location)
-            return;
+          if (!location) return;
 
           const pingData = {
             userid: user.uid,
@@ -168,7 +167,6 @@ export default function HomeScreen() {
       getTokenAndPingLocation();
     }
   }, [user, location]);
-
 
   if (initializing) return null;
 

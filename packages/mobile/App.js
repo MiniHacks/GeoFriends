@@ -194,6 +194,7 @@ export default function App() {
     <NavigationContainer>
       <Tab.Navigator
         tabBarPosition="bottom"
+        initialRouteName="Home"
         screenOptions={{
           headerShown: false,
         }}
